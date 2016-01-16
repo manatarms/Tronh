@@ -33,7 +33,7 @@ public class Tronh_Game extends Game{
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
 		
-		g.setColor(Color.pink);
+		g.setColor(Color.GREEN);
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
