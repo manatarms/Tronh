@@ -16,9 +16,14 @@ import intro.IntroGame;
 public class Tronh_Game extends Game{
 	
     float y = 10;
+    float x = 10;
     float velocity = 0;
     float gravity = .5f;
-    boolean canJump = false;
+    boolean canRun = false;
+    boolean right = false;
+    boolean left = false;
+    boolean up = false;
+    boolean down = false;
     Image banner;
     
     public Tronh_Game(){
@@ -37,23 +42,62 @@ public class Tronh_Game extends Game{
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		velocity += gravity;
 		
-		y+= velocity;
 		
-		if(y +100 > HEIGHT){
-			velocity = 0;
-			y = HEIGHT - 100;
-		canJump = true;
-		}
-		
-		if(canJump && p1.pressed(Button.A))
+		if(p1.pressed(Button.R))
 		{
-			velocity = -10;
-			canJump = false;
+			canRun = true;
+			right = true;
+			left = false;
+			up = false;
+			down = false;
 		}
+		if(p1.pressed(Button.L)){
+			canRun = true;
+			right = false;
+			left = true;
+			up = false;
+			down = false;
+		}
+		if(p1.pressed(Button.U)){
+			canRun = true;
+			right = false;
+			left = false;
+			up = true;
+			down = false;
+		}
+		if(p1.pressed(Button.D)){
+			canRun = true;
+			right = false;
+			left = false;
+			up = false;
+			down = true;
+		}
+		
+		
+		if(canRun && right){
+			velocity = 10;
+			x += velocity;
+		}
+		
+		if(canRun && left){
+			velocity = 10;
+			x -= velocity;
+		}
+		
+		if(canRun && up){
+			velocity = 10;
+			y -= velocity;
+		}
+		
+		if(canRun && down){
+			velocity = 10;
+			y += velocity;
+		}		
+		
+
 		g.setColor(Color.BLACK);
-		g.fillOval(0,(int)y,100, 100);
+		g.fillRoundRect((int)x,(int)y,50, 50, 20, 20);
 		
 	}
 
