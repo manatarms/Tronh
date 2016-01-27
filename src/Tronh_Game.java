@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -25,7 +26,8 @@ public class Tronh_Game extends Game{
     boolean up = false;
     boolean down = false;
     Image banner;
-    
+    boolean first = true;
+    Coin coin = new Coin(WIDTH, HEIGHT);
     public Tronh_Game(){
     	try{
     	banner = ImageIO.read(Tronh_Game.class.getResource("banner.png"));
@@ -41,7 +43,6 @@ public class Tronh_Game extends Game{
 		g.setColor(Color.GREEN);
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		
 		
 		
 		if(p1.pressed(Button.R))
@@ -99,6 +100,23 @@ public class Tronh_Game extends Game{
 		g.setColor(Color.BLACK);
 		g.fillRoundRect((int)x,(int)y,50, 50, 20, 20);
 		
+		int coinX = coin.getX(),coinY = coin.getY();		
+		
+		if((int)x != coinX){
+			System.out.println("This is x"+x);
+			System.out.println("This is CoinX"+coinX);
+			coin.drawCoin(g, coinX, coinY);
+		 	//System.out.println("Drawing a OLD coin");
+			
+		}
+			
+		else{
+				Coin coinnew = new Coin(WIDTH, HEIGHT);
+				int coinnewX = coinnew.getX(),coinnewY = coinnew.getY();
+			 	coinnew.drawCoin(g, coinnewX, coinnewY);
+			 //	System.out.println("Drawing a new coin----------------------");
+				
+		}
 	}
 
 	@Override
@@ -112,7 +130,41 @@ public class Tronh_Game extends Game{
 		// Dimensions : 512 x 128
 		return banner;
 	}
+	
+	
+	
+	
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] {new Tronh_Game(), new IntroGame(), new BasicGame()}));
 	}
 }
+	
+	//Class Coin
+	final class Coin {
+        
+	    private final int Coinx;
+	    private final int Coiny;
+	        
+	    public Coin(int WIDTH, int HEIGHT) {
+	    	int minX =1, maxX = WIDTH;
+			int minY =1, maxY = HEIGHT;
+			int randX = minX + (int)(Math.random() * ((maxX - minX) + 1));
+			int randY = minY + (int)(Math.random() * ((maxY - minY) + 1));
+	        this.Coinx = randX;
+	        this.Coiny = randY;
+	    }
+	    public int getX() {
+	        return Coinx;
+	    }
+	    public int getY() {
+	        return Coiny;
+	    }
+	    
+	    public void drawCoin(Graphics2D g, int x,int y){
+	    	int w=15,h = 15;
+	    	g.setColor(Color.BLACK);
+			g.fillOval(x,y, w, h);
+	    }
+	        
+	}
+
