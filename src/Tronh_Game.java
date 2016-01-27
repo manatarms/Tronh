@@ -103,19 +103,17 @@ public class Tronh_Game extends Game{
 		int coinX = coin.getX(),coinY = coin.getY();		
 		
 		if((int)x != coinX){
-			System.out.println("This is x"+x);
-			System.out.println("This is CoinX"+coinX);
-			coin.drawCoin(g, coinX, coinY);
-		 	//System.out.println("Drawing a OLD coin");
-			
+				System.out.println("This is x"+x);
+				System.out.println("This is CoinX"+coinX);
+				coin.drawCoin(g, coinX, coinY);
+			 	//System.out.println("Drawing OLD coin");
 		}
 			
 		else{
 				Coin coinnew = new Coin(WIDTH, HEIGHT);
 				int coinnewX = coinnew.getX(),coinnewY = coinnew.getY();
 			 	coinnew.drawCoin(g, coinnewX, coinnewY);
-			 //	System.out.println("Drawing a new coin----------------------");
-				
+			 //	System.out.println("Drawing NEW coin----------------------");
 		}
 	}
 
