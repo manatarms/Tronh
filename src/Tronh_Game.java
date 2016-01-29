@@ -120,7 +120,6 @@ public class Tronh_Game extends Game{
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
