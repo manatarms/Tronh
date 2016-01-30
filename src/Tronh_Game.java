@@ -1,8 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -27,6 +27,7 @@ public class Tronh_Game extends Game{
     boolean down = false;
     Image banner;
     boolean first = true;
+    boolean gotcoin =false;
     Coin coin = new Coin(WIDTH, HEIGHT);
     public Tronh_Game(){
     	try{
@@ -40,7 +41,7 @@ public class Tronh_Game extends Game{
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
 		
-		g.setColor(Color.GREEN);
+		g.setColor(Color.DARK_GRAY);
 		
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
@@ -97,24 +98,34 @@ public class Tronh_Game extends Game{
 		}		
 		
 
-		g.setColor(Color.BLACK);
-		g.fillRoundRect((int)x,(int)y,50, 50, 20, 20);
+		g.setColor(Color.RED);
+		g.fillRect((int)x,(int)y,50, 50);
 		
-		int coinX = coin.getX(),coinY = coin.getY();		
+		int coinX = coin.getX(),coinY = coin.getY();
 		
-		if((int)x != coinX){
-				System.out.println("This is x"+x);
-				System.out.println("This is CoinX"+coinX);
-				coin.drawCoin(g, coinX, coinY);
-			 	//System.out.println("Drawing OLD coin");
+		//Check collisions
+		Rectangle playerRect = new Rectangle((int)x,(int)y, 50, 50);
+		Rectangle coinRectangle = new Rectangle((int)coinX,(int)coinY, 20, 20);
+		
+		if(collision(playerRect, coinRectangle)){
+			coin = new Coin(WIDTH, HEIGHT);
+			coinX = coin.getX();
+			coinY = coin.getY();
+		 	coin.drawCoin(g, coinX, coinY);
 		}
-			
 		else{
-				Coin coinnew = new Coin(WIDTH, HEIGHT);
-				int coinnewX = coinnew.getX(),coinnewY = coinnew.getY();
-			 	coinnew.drawCoin(g, coinnewX, coinnewY);
-			 //	System.out.println("Drawing NEW coin----------------------");
+			coin.drawCoin(g, coinX, coinY);
+		}	
+		
+		//Reset Player
+		if(outOfBounds((int) x,(int)y)){
+			//Reset Player method comes here using hard coded for now
+			   y = 10;
+			   x = 10;
+			   canRun = false;
 		}
+		
+		
 	}
 
 	@Override
@@ -128,9 +139,26 @@ public class Tronh_Game extends Game{
 		return banner;
 	}
 	
+	//Detect collision
+		public boolean collision(Rectangle r,Rectangle q){
+		
+		        if(r.intersects(q)){
+		        	return true;}
+		        else{
+		        	return false;	
+		        	}
+		}
 	
-	
-	
+		//Detect collision
+		public boolean outOfBounds(int x, int y){
+				
+		        if(x < 0 || x > WIDTH || y < 0 || y> HEIGHT){
+		        	return true;}
+		        else{
+		        	return false;	
+		        	}
+				}
+
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] {new Tronh_Game(), new IntroGame(), new BasicGame()}));
 	}
@@ -138,13 +166,13 @@ public class Tronh_Game extends Game{
 	
 	//Class Coin
 	final class Coin {
-        
+		int w=20,h = 20;
 	    private final int Coinx;
 	    private final int Coiny;
 	        
 	    public Coin(int WIDTH, int HEIGHT) {
-	    	int minX =1, maxX = WIDTH;
-			int minY =1, maxY = HEIGHT;
+	    	int minX =1, maxX = WIDTH-w;
+			int minY =1, maxY = HEIGHT-h;
 			int randX = minX + (int)(Math.random() * ((maxX - minX) + 1));
 			int randY = minY + (int)(Math.random() * ((maxY - minY) + 1));
 	        this.Coinx = randX;
@@ -156,12 +184,11 @@ public class Tronh_Game extends Game{
 	    public int getY() {
 	        return Coiny;
 	    }
-	    
+	      
 	    public void drawCoin(Graphics2D g, int x,int y){
-	    	int w=15,h = 15;
-	    	g.setColor(Color.BLACK);
+	    	g.setColor(Color.YELLOW);
 			g.fillOval(x,y, w, h);
 	    }
 	        
-	}
-
+	
+}//End Tronh class
