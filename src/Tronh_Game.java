@@ -28,7 +28,10 @@ public class Tronh_Game extends Game{
     Image banner;
     boolean first = true;
     boolean gotcoin =false;
+    int enemyTriggerCounter = 1;
     Coin coin = new Coin(WIDTH, HEIGHT);
+    Enemy enemy = new Enemy(WIDTH, HEIGHT);
+    int enemyX,enemyY;
     public Tronh_Game(){
     	try{
     	banner = ImageIO.read(Tronh_Game.class.getResource("banner.png"));
@@ -46,6 +49,7 @@ public class Tronh_Game extends Game{
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		
+		
 		if(p1.pressed(Button.R))
 		{
 			canRun = true;
@@ -53,6 +57,7 @@ public class Tronh_Game extends Game{
 			left = false;
 			up = false;
 			down = false;
+			
 		}
 		if(p1.pressed(Button.L)){
 			canRun = true;
@@ -80,25 +85,35 @@ public class Tronh_Game extends Game{
 		if(canRun && right){
 			velocity = 10;
 			x += velocity;
+			enemy.drawEnemy(g, (int)x-enemy.currentSpeed(),(int)y);
+			 enemyX=(int)x-enemy.currentSpeed();enemyY=(int)y;
+			
 		}
 		
 		if(canRun && left){
 			velocity = 10;
 			x -= velocity;
+			enemy.drawEnemy(g, (int)x+enemy.currentSpeed(),(int)y);
+			enemyX=(int)x+enemy.currentSpeed();enemyY=(int)y;
 		}
 		
 		if(canRun && up){
 			velocity = 10;
 			y -= velocity;
+			enemy.drawEnemy(g, (int)x,(int)y+enemy.currentSpeed());
+			 enemyX=(int)x;enemyY=(int)y+enemy.currentSpeed();
 		}
 		
 		if(canRun && down){
 			velocity = 10;
 			y += velocity;
+			enemy.drawEnemy(g, (int)x,(int)y-enemy.currentSpeed());
+			 enemyX=(int)x;enemyY=(int)y-enemy.currentSpeed();
 		}		
 		
+	
 
-		g.setColor(Color.RED);
+		g.setColor(Color.BLUE);
 		g.fillRect((int)x,(int)y,50, 50);
 		
 		int coinX = coin.getX(),coinY = coin.getY();
@@ -106,24 +121,41 @@ public class Tronh_Game extends Game{
 		//Check collisions
 		Rectangle playerRect = new Rectangle((int)x,(int)y, 50, 50);
 		Rectangle coinRectangle = new Rectangle((int)coinX,(int)coinY, 20, 20);
+		Rectangle enemyRectangle = new Rectangle((int)enemyX,(int)enemyY, 50, 50);
 		
 		if(collision(playerRect, coinRectangle)){
 			coin = new Coin(WIDTH, HEIGHT);
 			coinX = coin.getX();
 			coinY = coin.getY();
 		 	coin.drawCoin(g, coinX, coinY);
+		 	enemy.slowDown(1);
+		 	enemyTriggerCounter = 1;
 		}
 		else{
 			coin.drawCoin(g, coinX, coinY);
+			if(enemyTriggerCounter>100){
+			enemy.speedUp(1);
+			}
+			enemyTriggerCounter++;
 		}	
 		
-		//Reset Player
+		if(collision(playerRect, enemyRectangle)){
+				y = 10;
+			    x = 10;
+			    enemy.resetEnemy();
+			    enemyTriggerCounter = 1;
+			    canRun = false;
+		}
+
+		
+		//Reset Player out of bounds
 		if(outOfBounds((int) x,(int)y)){
 			//Reset Player method comes here using hard coded for now
 			   y = 10;
 			   x = 10;
 			   canRun = false;
 		}
+		
 		
 		
 	}
@@ -139,6 +171,7 @@ public class Tronh_Game extends Game{
 		return banner;
 	}
 	
+	//----- Utilities -----
 	//Detect collision
 		public boolean collision(Rectangle r,Rectangle q){
 		
@@ -158,11 +191,15 @@ public class Tronh_Game extends Game{
 		        	return false;	
 		        	}
 				}
+		//random
+		public float randFloat(float Min, float Max) {
+		    return Min + (float)(Math.random() * (Max - Min + 1));
+		}
 
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] {new Tronh_Game(), new IntroGame(), new BasicGame()}));
 	}
-}
+}//End Tronh class
 	
 	//Class Coin
 	final class Coin {
@@ -191,4 +228,51 @@ public class Tronh_Game extends Game{
 	    }
 	        
 	
-}//End Tronh class
+}//End Coin class
+	
+	//Class Enemy
+		final class Enemy {
+			int w=50,h = 50;
+		    private int EnemyX ;
+		    private int EnemyY ;
+		    private int Speed=100;
+		        
+		    public Enemy(int WIDTH, int HEIGHT) {
+		        this.EnemyX = -100;
+		        this.EnemyY = 10;
+		    }
+		    public int getX() {
+		        return EnemyX;
+		    }
+		    public int getY() {
+		        return EnemyY;
+		    }
+		    
+		    public int currentSpeed() {
+		        return Speed;
+		    }
+		    
+		    public void resetEnemy(){
+		    	EnemyX= -100;
+		    	EnemyY=10;
+		    	Speed =100;
+		    }
+		    
+		    public int speedUp(int speedup) {
+		    	Speed=Speed-speedup;
+		        return Speed-speedup;
+		    }
+		    
+		    public int slowDown(int slowdown) {
+		    	Speed=Speed+slowdown;
+		        return Speed+slowdown;
+		    }
+		      
+		    public void drawEnemy(Graphics2D g, int x,int y){
+		    	g.setColor(Color.RED);
+				g.fillRect(x,y, w, h);
+				//g.fillRoundRect(x, y, w, h, 10,10);
+		    }
+		        
+		
+	}//End Enemy class
