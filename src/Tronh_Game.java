@@ -25,18 +25,22 @@ public class Tronh_Game extends Game {
 	boolean left = false;
 	boolean up = false;
 	boolean down = false;
-	Image banner, background;
+	Image banner, background, player_char;
 	boolean first = true;
 	boolean gotcoin = false;
+	int coinTotal;
+	int highScore;
 	int enemyTriggerCounter = 1;
 	Coin coin = new Coin(WIDTH, HEIGHT);
+	Score score = new Score(coinTotal, highScore);
 	Enemy enemy = new Enemy(WIDTH, HEIGHT);
 	int enemyX, enemyY;
 
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("tronh_banner.png"));
-			background = ImageIO.read(Tronh_Game.class.getResource("Background.jpg"));
+			background = ImageIO.read(Tronh_Game.class.getResource("Background2.png"));
+			player_char = ImageIO.read(Tronh_Game.class.getResource("player1_test.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,11 +49,10 @@ public class Tronh_Game extends Game {
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
 
-		//g.setColor(Color.DARK_GRAY);
-		
-		//Added new background (not yet sized properly)
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		// Added new background (not yet sized properly)
 		g.drawImage(background, 0, 0, null);
-		//g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		if (p1.pressed(Button.R)) {
 			canRun = true;
@@ -114,8 +117,8 @@ public class Tronh_Game extends Game {
 			enemyY = (int) y - enemy.currentSpeed();
 		}
 
-		g.setColor(Color.BLUE);
-		g.fillRect((int) x, (int) y, 50, 50);
+		// Player rendering
+		g.drawImage(player_char, (int) x, (int) y, null);
 
 		int coinX = coin.getX(), coinY = coin.getY();
 
@@ -270,9 +273,48 @@ final class Enemy {
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y) {
-		g.setColor(Color.RED);
-		g.fillRect(x, y, w, h);
-		// g.fillRoundRect(x, y, w, h, 10,10);
+		// Proper initialization
+		Image enemy_char = null;
+
+		// Adds enemy appearance
+		try {
+			enemy_char = ImageIO.read(Tronh_Game.class.getResource("enemy_test.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Renders enemy
+		g.drawImage(enemy_char, x, y, null);
 	}
 
 }// End Enemy class
+
+
+// Class Score
+final class Score {
+	int coinTotal = 0;
+	int highScore = 0;
+	int totalCoins;
+	
+	//Initializes score board
+	public Score(int coinTotal, int highScore){
+		
+	}
+	
+	// Incrementation of coins
+	public int addCoin(int c) {
+		System.out.println("Current Score: " + (totalCoins + 1));
+		return totalCoins + 1;
+	}
+	
+	// Saves highscore and resets coinTotal when game ends
+	public void resetCoin(int coinTotal, int highScore) {
+		System.out.println("Player Score: " + coinTotal);
+		System.out.println("High Score : " + highScore);
+		if (coinTotal > highScore) {
+			System.out.println("new High Score: " + highScore);
+			highScore = coinTotal;
+		}
+		coinTotal = 0;
+	}
+}//End of Score class
