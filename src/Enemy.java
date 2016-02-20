@@ -8,13 +8,16 @@ final class Enemy {
 	int w = 50, h = 50;
 	private int EnemyX;
 	private int EnemyY;
-	private int Speed = 100;
 
+	private int Speed = 100;
+	
+	
 	public Enemy(int WIDTH, int HEIGHT) {
-		this.EnemyX = -100;
-		this.EnemyY = 10;
+		this.EnemyX = -200;
+		this.EnemyY = -200;
 	}
 
+	
 	public int getX() {
 		return EnemyX;
 	}
@@ -28,9 +31,8 @@ final class Enemy {
 	}
 
 	public void resetEnemy() {
-		EnemyX = -100;
-		EnemyY = 10;
-		Speed = 100;
+		EnemyX = -200;
+		EnemyY = -200;
 	}
 
 	public int speedUp(int speedup) {
@@ -41,6 +43,22 @@ final class Enemy {
 	public int slowDown(int slowdown) {
 		Speed = Speed + slowdown;
 		return Speed + slowdown;
+	}
+	
+	public void moveEnemy(int playerX,int playerY,int speed){
+		if(playerX > EnemyX){
+			this.EnemyX = EnemyX+speed;
+		}
+		else if(playerX < EnemyX){
+			this.EnemyX = EnemyX - speed;
+		}
+		
+		if(playerY > EnemyY){
+			this.EnemyY = EnemyY+speed;
+		}
+		else if(playerY < EnemyY){
+			this.EnemyY = EnemyY-speed;
+		}
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y, int dir) {

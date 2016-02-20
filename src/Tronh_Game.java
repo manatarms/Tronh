@@ -32,11 +32,14 @@ public class Tronh_Game extends Game {
 	boolean gotcoin = false;
 	int coinTotal;
 	int highScore;
-	int enemyTriggerCounter = 1;
+	int maxCount = 1;
+	int trigger = 100;
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score score = new Score(coinTotal, highScore);
 	Enemy enemy = new Enemy(WIDTH, HEIGHT);
 	int enemyX, enemyY;
+	int dir;
+	int enemySpeed =5;
 
 	public Tronh_Game() {
 		try {
@@ -59,10 +62,6 @@ public class Tronh_Game extends Game {
 		// Added new background (not yet sized properly)
 		g.drawImage(background, 0, 0, null);
 		
-		JLabel f = new JLabel("Score");
-	    f.setSize(50, 50);
-	    //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    f.setVisible(true);
 		
 		if (p1.pressed(Button.R)) {
 			canRun = true;
@@ -70,7 +69,7 @@ public class Tronh_Game extends Game {
 			left = false;
 			up = false;
 			down = false;
-
+			dir = 3;
 		}
 		if (p1.pressed(Button.L)) {
 			canRun = true;
@@ -78,6 +77,7 @@ public class Tronh_Game extends Game {
 			left = true;
 			up = false;
 			down = false;
+			dir = 2;
 		}
 		if (p1.pressed(Button.U)) {
 			canRun = true;
@@ -85,6 +85,7 @@ public class Tronh_Game extends Game {
 			left = false;
 			up = true;
 			down = false;
+			dir = 1;
 		}
 		if (p1.pressed(Button.D)) {
 			canRun = true;
@@ -92,15 +93,14 @@ public class Tronh_Game extends Game {
 			left = false;
 			up = false;
 			down = true;
+			dir = 0;
 		}
 
 		if (canRun && right) {
 			g.drawImage(player_R, (int) x, (int) y, null);
 			velocity = 10;
 			x += velocity;
-			enemy.drawEnemy(g, (int) x - enemy.currentSpeed(), (int) y, 3);
-			enemyX = (int) x - enemy.currentSpeed();
-			enemyY = (int) y;
+		
 
 		}
 
@@ -108,70 +108,69 @@ public class Tronh_Game extends Game {
 			g.drawImage(player_L, (int) x, (int) y, null);
 			velocity = 10;
 			x -= velocity;
-			enemy.drawEnemy(g, (int) x + enemy.currentSpeed(), (int) y, 2);
-			enemyX = (int) x + enemy.currentSpeed();
-			enemyY = (int) y;
+		
 		}
 
 		if (canRun && up) {
 			g.drawImage(player_U, (int) x, (int) y, null);
 			velocity = 10;
 			y -= velocity;
-			enemy.drawEnemy(g, (int) x, (int) y + enemy.currentSpeed(), 1);
-			enemyX = (int) x;
-			enemyY = (int) y + enemy.currentSpeed();
+			
 		}
 
 		if (canRun && down) {
 			g.drawImage(player_D, (int) x, (int) y, null);
 			velocity = 10;
 			y += velocity;
-			enemy.drawEnemy(g, (int) x, (int) y - enemy.currentSpeed(), 0);
-			enemyX = (int) x;
-			enemyY = (int) y - enemy.currentSpeed();
 		}
 
 		// Player rendering
 		if (!canRun) {
 			g.drawImage(player_D, (int) x, (int) y, null);
-			enemy.drawEnemy(g, (int) x, (int) y - enemy.currentSpeed(), 0);
+			
 		}
 
 		int coinX = coin.getX(), coinY = coin.getY();
 
 		// Check collisions based on player movement direction
 		Rectangle playerRect = null;
+		Rectangle enemyRectangle =null;
 		if (down || up || !canRun){
 			playerRect = new Rectangle((int) x, (int) y, player_U.getWidth(null), player_U.getHeight(null));
+			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), 50, 50);//hard coded this for now
 		}
 		if (left || right){
 			playerRect = new Rectangle((int) x, (int) y, player_L.getWidth(null), player_L.getHeight(null));
+			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), 50, 50);//hard coded this for now
 		}
 		
 		//Checks collision
 		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
-		Rectangle enemyRectangle = new Rectangle((int) enemyX, (int) enemyY, 50, 50);
-
+		
+		
+		enemy.moveEnemy((int)x, (int)y,enemySpeed);
+		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);
+		
 		if (collision(playerRect, coinRectangle)) {
 			coin = new Coin(WIDTH, HEIGHT);
 			coinX = coin.getX();
 			coinY = coin.getY();
 			coin.drawCoin(g, coinX, coinY);
-			enemy.slowDown(1);
-			enemyTriggerCounter = 1;
+		
+//			enemyTriggerCounter = 1;
 		} else {
 			coin.drawCoin(g, coinX, coinY);
-			if (enemyTriggerCounter > 100) {
-				enemy.speedUp(1);
+			trigger = (trigger + 1 < maxCount ? trigger + 1 :0);
+			if(maxCount==100){
+				enemySpeed++;
 			}
-			enemyTriggerCounter++;
 		}
 
 		if (collision(playerRect, enemyRectangle)) {
 			y = 25;
 			x = 25;
 			enemy.resetEnemy();
-			enemyTriggerCounter = 1;
+//			enemyTriggerCounter = 1;
 			canRun = false;
 		}
 
