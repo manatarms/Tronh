@@ -1,3 +1,4 @@
+import javax.swing.JFrame;
 
 public class Score {
 	// Class Score
@@ -7,7 +8,8 @@ public class Score {
 		
 		//Initializes score board
 		public Score(int coinTotal, int highScore){
-			
+			coinTotal = 0;
+			highScore = 0;
 		}
 		
 		// Incrementation of coins
