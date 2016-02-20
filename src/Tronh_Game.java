@@ -40,12 +40,12 @@ public class Tronh_Game extends Game {
 
 	public Tronh_Game() {
 		try {
-			banner = ImageIO.read(Tronh_Game.class.getResource("tronh_banner.png"));
-			background = ImageIO.read(Tronh_Game.class.getResource("Background2.png"));
-			player_U = ImageIO.read(Tronh_Game.class.getResource("player1_test_U.png"));
-			player_D = ImageIO.read(Tronh_Game.class.getResource("player1_test_D.png"));
-			player_L = ImageIO.read(Tronh_Game.class.getResource("player1_test_L.png"));
-			player_R = ImageIO.read(Tronh_Game.class.getResource("player1_test_R.png"));
+			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
+			background = ImageIO.read(Tronh_Game.class.getResource("images/Background2.png"));
+			player_U = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_U.png"));
+			player_D = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_D.png"));
+			player_L = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_L.png"));
+			player_R = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_R.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

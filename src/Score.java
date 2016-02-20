@@ -1,4 +1,3 @@
-import javax.swing.JFrame;
 
 public class Score {
 	// Class Score
@@ -7,13 +6,14 @@ public class Score {
 		int totalCoins;
 		
 		//Initializes score board
-		public Score(int coinTotal, int highScore){
-			coinTotal = 0;
-			highScore = 0;
+		public Score(int c, int h){
+			c = coinTotal;
+			h = highScore;
 		}
 		
 		// Incrementation of coins
 		public int addCoin(int c) {
+			totalCoins = c;
 			System.out.println("Current Score: " + (totalCoins + 1));
 			return totalCoins + 1;
 		}

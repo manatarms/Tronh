@@ -46,10 +46,10 @@ final class Enemy {
 	public void drawEnemy(Graphics2D g, int x, int y, int dir) {
 		Image enemy_U = null, enemy_D = null, enemy_L = null, enemy_R = null;
 		try {
-			enemy_U = ImageIO.read(Tronh_Game.class.getResource("enemy_test_U.png"));
-			enemy_D = ImageIO.read(Tronh_Game.class.getResource("enemy_test_D.png"));
-			enemy_L = ImageIO.read(Tronh_Game.class.getResource("enemy_test_L.png"));
-			enemy_R = ImageIO.read(Tronh_Game.class.getResource("enemy_test_R.png"));
+			enemy_U = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_U.png"));
+			enemy_D = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_D.png"));
+			enemy_L = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_L.png"));
+			enemy_R = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_R.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
