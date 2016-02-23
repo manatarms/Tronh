@@ -3,11 +3,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import arcadia.Arcadia;
 import arcadia.Button;
 import arcadia.Game;
@@ -35,7 +31,7 @@ public class Tronh_Game extends Game {
 	int maxCount = 1;
 	int trigger = 100;
 	Coin coin = new Coin(WIDTH, HEIGHT);
-	Score score = new Score(coinTotal, highScore);
+	Score sc = new Score();
 	Enemy enemy = new Enemy(WIDTH, HEIGHT);
 	int enemyX, enemyY;
 	int dir;
@@ -61,7 +57,7 @@ public class Tronh_Game extends Game {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// Added new background (not yet sized properly)
 		g.drawImage(background, 0, 0, null);
-		
+		sc.drawScore(g, 890,30);
 		
 		if (p1.pressed(Button.R)) {
 			canRun = true;
@@ -156,6 +152,8 @@ public class Tronh_Game extends Game {
 			coinX = coin.getX();
 			coinY = coin.getY();
 			coin.drawCoin(g, coinX, coinY);
+			sc.addCoin();
+		    sc.saveScore();
 		
 //			enemyTriggerCounter = 1;
 		} else {
@@ -164,6 +162,7 @@ public class Tronh_Game extends Game {
 			if(maxCount==100){
 				enemySpeed++;
 			}
+		
 		}
 
 		if (collision(playerRect, enemyRectangle)) {
@@ -172,6 +171,8 @@ public class Tronh_Game extends Game {
 			enemy.resetEnemy();
 //			enemyTriggerCounter = 1;
 			canRun = false;
+			sc.resetCoin();
+			
 		}
 
 		// Reset Player out of bounds
@@ -180,6 +181,7 @@ public class Tronh_Game extends Game {
 			y = 25;
 			x = 25;
 			canRun = false;
+			sc.resetCoin();
 		}
 
 	}
