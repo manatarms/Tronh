@@ -2,8 +2,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import arcadia.Arcadia;
 import arcadia.Button;
 import arcadia.Game;
@@ -11,6 +19,7 @@ import arcadia.Input;
 import arcadia.Sound;
 import basicGame.BasicGame;
 import intro.IntroGame;
+import sun.applet.Main;
 
 public class Tronh_Game extends Game {
 
@@ -36,6 +45,7 @@ public class Tronh_Game extends Game {
 	int enemyX, enemyY;
 	int dir;
 	int enemySpeed =5;
+	String	collectsound ="src/sounds/collect.wav";
 
 	public Tronh_Game() {
 		try {
@@ -144,7 +154,8 @@ public class Tronh_Game extends Game {
 		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
 		
 		
-		enemy.moveEnemy((int)x, (int)y,enemySpeed);
+		//enemy.moveEnemy((int)x, (int)y,enemySpeed);
+		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);
 		
 		if (collision(playerRect, coinRectangle)) {
@@ -154,9 +165,18 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coinX, coinY);
 			sc.addCoin();
 		    sc.saveScore();
+		    playSound(collectsound);
 		
 //			enemyTriggerCounter = 1;
-		} else {
+		} 
+		else if(collision(enemyRectangle, coinRectangle)){
+			coin = new Coin(WIDTH, HEIGHT);
+			coinX = coin.getX();
+			coinY = coin.getY();
+			coin.drawCoin(g, coinX, coinY);
+			
+		}
+		else {
 			coin.drawCoin(g, coinX, coinY);
 			trigger = (trigger + 1 < maxCount ? trigger + 1 :0);
 			if(maxCount==100){
@@ -185,6 +205,30 @@ public class Tronh_Game extends Game {
 		}
 
 	}
+
+	public static void playSound( String url) {
+		 
+		 
+		try {
+	         // Open an audio input stream.           
+	          File soundFile = new File(url); //you could also get the sound file with an URL
+	       
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	         // Get a sound clip resource.
+	         Clip clip = AudioSystem.getClip();
+	         // Open audio clip and load samples from the audio input stream.
+	         clip.open(audioIn);
+	         clip.start();
+	      } catch (UnsupportedAudioFileException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      } catch (LineUnavailableException e) {
+	         e.printStackTrace();
+	      }
+		    }
+		
+	
 
 	@Override
 	public void reset() {
