@@ -22,6 +22,7 @@ import intro.IntroGame;
 import sun.applet.Main;
 
 public class Tronh_Game extends Game {
+	
 	float y = 10;
 	float x = 10;
 	float velocity = 0;
