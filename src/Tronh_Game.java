@@ -137,7 +137,7 @@ public class Tronh_Game extends Game {
 		}
 
 		int coinX = coin.getX(), coinY = coin.getY();
-
+		
 		// Check collisions based on player movement direction
 		Rectangle playerRect = null;
 		Rectangle enemyRectangle =null;
@@ -152,9 +152,9 @@ public class Tronh_Game extends Game {
 		
 		//Checks collision
 		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
-		g.draw(coinRectangle);
-		g.draw(enemyRectangle);
-		g.draw(playerRect);
+		//g.draw(coinRectangle);
+		//g.draw(enemyRectangle);
+		//g.draw(playerRect);
 		//enemy.moveEnemy((int)x, (int)y,enemySpeed);
 		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);
@@ -203,6 +203,7 @@ public class Tronh_Game extends Game {
 			x = 25;
 			canRun = false;
 			sc.resetCoin();
+			enemy.resetEnemy();
 		}
 
 	}
@@ -256,7 +257,7 @@ public class Tronh_Game extends Game {
 	// Detect collision
 	public boolean outOfBounds(int x, int y) {
 
-		if (x < 0 || x > WIDTH - 0 || y < 0 || y > HEIGHT - 0) {
+		if (x < 0 || x > WIDTH - player_L.getWidth(null) || y < 0 || y > HEIGHT - player_U.getHeight(null)) {
 			return true;
 		} else {
 			return false;
