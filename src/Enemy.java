@@ -10,14 +10,12 @@ final class Enemy {
 	private int EnemyY;
 
 	private int Speed = 100;
-	
-	
+
 	public Enemy(int WIDTH, int HEIGHT) {
 		this.EnemyX = -200;
 		this.EnemyY = -200;
 	}
 
-	
 	public int getX() {
 		return EnemyX;
 	}
@@ -44,20 +42,18 @@ final class Enemy {
 		Speed = Speed + slowdown;
 		return Speed + slowdown;
 	}
-	
-	public void moveEnemy(int playerX,int playerY,int speed){
-		if(playerX > EnemyX){
-			this.EnemyX = EnemyX+speed;
-		}
-		else if(playerX < EnemyX){
+
+	public void moveEnemy(int playerX, int playerY, int speed) {
+		if (playerX > EnemyX) {
+			this.EnemyX = EnemyX + speed;
+		} else if (playerX < EnemyX) {
 			this.EnemyX = EnemyX - speed;
 		}
-		
-		if(playerY > EnemyY){
-			this.EnemyY = EnemyY+speed;
-		}
-		else if(playerY < EnemyY){
-			this.EnemyY = EnemyY-speed;
+
+		if (playerY > EnemyY) {
+			this.EnemyY = EnemyY + speed;
+		} else if (playerY < EnemyY) {
+			this.EnemyY = EnemyY - speed;
 		}
 	}
 
