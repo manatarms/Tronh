@@ -143,17 +143,18 @@ public class Tronh_Game extends Game {
 		Rectangle enemyRectangle =null;
 		if (down || up || !canRun){
 			playerRect = new Rectangle((int) x, (int) y, player_U.getWidth(null), player_U.getHeight(null));
-			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), 50, 50);//hard coded this for now
+			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),player_U.getWidth(null), player_U.getHeight(null));//hard coded this for now
 		}
 		if (left || right){
 			playerRect = new Rectangle((int) x, (int) y, player_L.getWidth(null), player_L.getHeight(null));
-			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), 50, 50);//hard coded this for now
+			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),  player_L.getWidth(null), player_L.getHeight(null));//hard coded this for now
 		}
 		
 		//Checks collision
 		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
-		
-		
+		g.draw(coinRectangle);
+		g.draw(enemyRectangle);
+		g.draw(playerRect);
 		//enemy.moveEnemy((int)x, (int)y,enemySpeed);
 		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);

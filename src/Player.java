@@ -1,7 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Move {
+public class Player extends Tronh_Game {
       void Up(Graphics2D g){
         g.drawImage(player_U, (int) x, (int) y, null);
 			  velocity = 10;
