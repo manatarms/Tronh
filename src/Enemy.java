@@ -29,8 +29,8 @@ final class Enemy {
 	}
 
 	public void resetEnemy() {
-		EnemyX = 900;
-		EnemyY = 536;
+		EnemyX = 950;
+		EnemyY = 500;
 	}
 
 	public int speedUp(int speedup) {
