@@ -46,7 +46,7 @@ public class Score {
 		currentCoins = 0;
 	}
 
-	public void drawScore(Graphics2D g, int x, int y) {
+	public void drawScore(Graphics2D g, int x, int y,String text) {
 		/*
 		 * RANODM COLORS int rand = (int) (Math.random()*100)+1; if(rand > 0 &&
 		 * rand < 20) g.setColor(Color.BLUE);
@@ -65,7 +65,7 @@ public class Score {
 		 * g.setColor(Color.BLUE); else g.setColor(Color.GREEN);
 		 */
 		g.setColor(Color.WHITE);
-		String s = "Current Score: " + currentCoins;
+		String s = text + currentCoins;
 		String hs = "High Score: " + highScore;
 		Font f = new Font("Futura", Font.PLAIN, 15);
 		g.setFont(f);
