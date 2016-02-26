@@ -46,6 +46,8 @@ public class Tronh_Game extends Game {
 	int dir;
 	int enemySpeed =5;
 	String	collectsound ="src/sounds/collect.wav";
+	
+	Player p = new Player();
 
 	public Tronh_Game() {
 		try {
@@ -118,10 +120,11 @@ public class Tronh_Game extends Game {
 		}
 
 		if (canRun && up) {
-			g.drawImage(player_U, (int) x, (int) y, null);
-			velocity = 10;
-			y -= velocity;
 			
+			/*g.drawImage(player_U, (int) x, (int) y, null);
+			velocity = 10;
+			y -= velocity;*/
+			y = p.Up(g, player_U, x, y, velocity);
 		}
 
 		if (canRun && down) {
