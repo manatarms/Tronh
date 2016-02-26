@@ -12,8 +12,8 @@ final class Enemy {
 	private int Speed = 100;
 
 	public Enemy(int WIDTH, int HEIGHT) {
-		this.EnemyX = -200;
-		this.EnemyY = -200;
+		this.EnemyX = 950;
+		this.EnemyY = 500;
 	}
 
 	public int getX() {
@@ -29,8 +29,8 @@ final class Enemy {
 	}
 
 	public void resetEnemy() {
-		EnemyX = -200;
-		EnemyY = -200;
+		EnemyX = 900;
+		EnemyY = 536;
 	}
 
 	public int speedUp(int speedup) {

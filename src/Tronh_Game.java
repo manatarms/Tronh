@@ -41,6 +41,7 @@ public class Tronh_Game extends Game {
 	int trigger = 100;
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
+	Score enemyScore = new Score();
 	Enemy enemy = new Enemy(WIDTH, HEIGHT);
 	int enemyX, enemyY;
 	int dir;
@@ -61,14 +62,17 @@ public class Tronh_Game extends Game {
 	}
 
 	@Override
-	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
-
+	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {	
+		
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		// Added new background (not yet sized properly)
 		g.drawImage(background, 0, 0, null);
-		sc.drawScore(g, 890,30);
+		if(canRun == true){
+		sc.drawScore(g, 890,30,"Your score: ");
+		enemyScore.drawScore(g, 20,30,"Enemy score: ");
 		
+		}
 		if (p1.pressed(Button.R)) {
 			canRun = true;
 			right = true;
@@ -156,7 +160,9 @@ public class Tronh_Game extends Game {
 		//g.draw(enemyRectangle);
 		//g.draw(playerRect);
 		//enemy.moveEnemy((int)x, (int)y,enemySpeed);
+		if(canRun){
 		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
+		}
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);
 		
 		if (collision(playerRect, coinRectangle)) {
@@ -175,7 +181,8 @@ public class Tronh_Game extends Game {
 			coinX = coin.getX();
 			coinY = coin.getY();
 			coin.drawCoin(g, coinX, coinY);
-			
+			enemyScore.addCoin();
+			enemyScore.saveScore();
 		}
 		else {
 			coin.drawCoin(g, coinX, coinY);
@@ -193,7 +200,7 @@ public class Tronh_Game extends Game {
 //			enemyTriggerCounter = 1;
 			canRun = false;
 			sc.resetCoin();
-			
+			enemyScore.resetCoin();
 		}
 
 		// Reset Player out of bounds
@@ -203,6 +210,7 @@ public class Tronh_Game extends Game {
 			x = 25;
 			canRun = false;
 			sc.resetCoin();
+			enemyScore.resetCoin();
 			enemy.resetEnemy();
 		}
 
