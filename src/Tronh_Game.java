@@ -69,8 +69,8 @@ public class Tronh_Game extends Game {
 		// Added new background (not yet sized properly)
 		g.drawImage(background, 0, 0, null);
 		if(canRun == true){
-		sc.drawScore(g, 890,30,"Your score: ");
-		enemyScore.drawScore(g, 20,30,"Enemy score: ");
+		enemyScore.drawScore(g, 890,30,"Your score: ");
+		sc.drawScore(g, 20,30,"Enemy score: ");
 		
 		}
 		if (p1.pressed(Button.R)) {
