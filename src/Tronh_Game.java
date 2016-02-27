@@ -4,8 +4,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
-import javax.print.DocFlavor.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -13,53 +13,37 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import arcadia.Arcadia;
-import arcadia.Button;
 import arcadia.Game;
 import arcadia.Input;
 import arcadia.Sound;
 import basicGame.BasicGame;
 import intro.IntroGame;
-import sun.applet.Main;
 
 public class Tronh_Game extends Game {
 	
-	int y = 10;
-	int x = 10;
-	
-	float gravity = .5f;
-	boolean canRun = false;
-	boolean right = false;
-	boolean left = false;
-	boolean up = false;
-	boolean down = false;
-	Image banner, background, player_L, player_R, player_U, player_D;
+	Image banner, background;
 	boolean first = true;
 	boolean gotcoin = false;
 	int coinTotal;
 	int highScore;
 	int maxCount = 1;
 	int trigger = 100;
-	Coin coin = new Coin(WIDTH, HEIGHT);
-	Score sc = new Score();
-	Score enemyScore = new Score();
-	Enemy enemy = new Enemy(WIDTH, HEIGHT);
-	int enemyX, enemyY;
-	int dir;
-	int enemySpeed =5;
+	
+	int enemySpeed = 5;
 	int playerSpeed = 10;
 	String enemyDirection = "UP";
 	String	collectsound ="src/sounds/collect.wav";
 	
+	Coin coin = new Coin(WIDTH, HEIGHT);
+	Score sc = new Score();
+	Score enemyScore = new Score();
+	Enemy enemy = new Enemy();
 	Player player = new Player();
 	
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
 			background = ImageIO.read(Tronh_Game.class.getResource("images/Background2.png"));
-			/*player_U = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_U.png"));
-			player_D = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_D.png"));
-			player_L = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_L.png"));
-			player_R = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_R.png"));*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -68,98 +52,79 @@ public class Tronh_Game extends Game {
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {	
 		
+		//Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		// Added new background (not yet sized properly)
-		g.drawImage(background, 0, 0, null);
-		if(canRun == true){
-		sc.drawScore(g, 20,30,"Your score: ");
-		enemyScore.drawScore(g, 890,30,"Enemy score: ");
-		}
 		
-		canRun = player.checkPressed(p1);
-		
-		if(canRun){
-		player.Move(player.getX(),player.getY(), playerSpeed);
-		player.drawPlayer(g, player.getX(), player.getY());
-		}else{
-		// Player rendering
-			g.drawImage(player_D, player.getX(), player.getY(), null);	
-		}
-
+		//Initializations in tick
 		int coinX = coin.getX(), coinY = coin.getY();
-		
-		// Check collisions based on player movement direction
 		Rectangle playerRect = null;
 		Rectangle enemyRectangle =null;
-		enemy.setDirection("up");
-	
-		//System.out.println(enemy.getHeight(enemy.getDirection()));
+		Rectangle coinRectangle =null;
+		enemy.setDirection("UP");
 		
-		if (down || up || !canRun){
-			playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth("up"),player.getPlayerHeight("up"));
-			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),player_U.getWidth(null), player_U.getHeight(null));//hard coded this for now
-		}
-		if (left || right){
-			playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth("left"), player.getPlayerHeight("left"));
-			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),  player_L.getWidth(null), player_L.getHeight(null));//hard coded this for now
+		// Rendering graphics
+		g.drawImage(background, 0, 0, null);
+		player.drawPlayer(g);
+		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
+		
+		//Checking if the player is active.
+		player.checkPressed(p1);
+		
+		if(player.canRun){
+		//generate score	
+		sc.drawScore(g, 20,30,"Your score: ");
+		enemyScore.drawScore(g, 890,30,"Enemy score: ");
+		
+		//move player and enemy
+		player.Move(player.getX(),player.getY(), playerSpeed);
+		enemy.moveEnemy(coinX, coinY,enemySpeed);
+		
 		}
 
-		//Checks collision
-		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
+		
+		// Check collisions initialization	
+		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),player.getPlayerHeight(player.getDirection()));
+ 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()), enemy.getEnemyHeight(enemy.getDirection()));//hard coded this for now
+		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
+		
+		//Test code for collisions
 		//g.draw(coinRectangle);
 		//g.draw(enemyRectangle);
 		//g.draw(playerRect);
-		//enemy.moveEnemy((int)x, (int)y,enemySpeed);
-		if(canRun){
-		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
-		}
-		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
 		
+		
+		//Check collisions between player and enemy
 		if (collision(playerRect, coinRectangle)) {
 			coin = new Coin(WIDTH, HEIGHT);
-			coinX = coin.getX();
-			coinY = coin.getY();
-			coin.drawCoin(g, coinX, coinY);
+			coin.drawCoin(g, coin.getX(), coin.getY());
 			sc.addCoin();
 		    sc.saveScore();
-		    playSound(collectsound);
-		
-//			enemyTriggerCounter = 1;
-		} 
+		    playSound(collectsound);		
+		}
+		//Check collisions between enemy and coin
 		else if(collision(enemyRectangle, coinRectangle)){
 			coin = new Coin(WIDTH, HEIGHT);
-			coinX = coin.getX();
-			coinY = coin.getY();
-			coin.drawCoin(g, coinX, coinY);
+			coin.drawCoin(g, coin.getX(), coin.getY());
 			enemyScore.addCoin();
 			enemyScore.saveScore();
 		}
-		else {
-			coin.drawCoin(g, coinX, coinY);
-			trigger = (trigger + 1 < maxCount ? trigger + 1 :0);
-			if(maxCount==100){
-				enemySpeed++;
-			}
-		
-		}
-
-		if (collision(playerRect, enemyRectangle)) {
-			player.setY(25);
-			player.setX(25);
+		//Check collision between player and enemy
+		else if (collision(playerRect, enemyRectangle)) {
+			player.playerReset();
 			enemy.resetEnemy();
-//			enemyTriggerCounter = 1;
-			canRun = false;
 			sc.resetCoin();
 			enemyScore.resetCoin();
+		}
+		//Else no collisions
+		else {
+			coin.drawCoin(g, coin.getX(), coin.getY());
+		
 		}
 
 		// Reset Player out of bounds
 		if (outOfBounds(player.getX(), player.getY())) {
-			// Reset Player method comes here using hard coded for now
-			player.setX(25);
-			player.setY(25);
-			canRun = false;
+			player.playerReset();
 			sc.resetCoin();
 			enemyScore.resetCoin();
 			enemy.resetEnemy();
@@ -167,6 +132,24 @@ public class Tronh_Game extends Game {
 
 	}
 
+			
+	
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Image banner() {
+		// Dimensions : 512 x 128
+		return banner;
+	}
+
+	// ----- Utilities for class -----
+	//-------------------------------------------------------------
+	
+	//Play sound method
 	public static void playSound( String url) {
 		 
 		 
@@ -187,47 +170,33 @@ public class Tronh_Game extends Game {
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-		    }
-		
+    }
+
 	
-
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public Image banner() {
-		// Dimensions : 512 x 128
-		return banner;
-	}
-
-	// ----- Utilities -----
-	// Detect collision
+	// Detect collision between rectangles
 	public boolean collision(Rectangle r, Rectangle q) {
 
 		if (r.intersects(q)) {
 			return true;
-		} else {
+		} 
 			return false;
-		}
 	}
 
-	// Detect collision
+	// Detect if player out of bounds
 	public boolean outOfBounds(int x, int y) {
 
-		if (x < 0 || x > WIDTH - player_L.getWidth(null) || y < 0 || y > HEIGHT - player_U.getHeight(null)) {
+		if (x < 0 || x > WIDTH - player.getPlayerWidth(player.getDirection()) || y < 0 || y > HEIGHT - player.getPlayerHeight(player.getDirection())) {
 			return true;
-		} else {
-			return false;
 		}
+			return false;
 	}
 
-	// random
+	// Generate random numbers
 	public float randFloat(float Min, float Max) {
 		return Min + (float) (Math.random() * (Max - Min + 1));
 	}
 
+	//Main method
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] { new Tronh_Game(), new IntroGame(), new BasicGame() }));
 	}

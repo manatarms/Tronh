@@ -6,12 +6,10 @@ public class Score {
 	// Class Score
 
 	private int currentCoins;
-	private int totalCoins;
 	private int highScore;
 
 	// Initializes score board
 	public Score() {
-		totalCoins = 0;
 		highScore = 0;
 		currentCoins = 0;
 	}
@@ -32,8 +30,6 @@ public class Score {
 	// Incrementation of coins
 	public int addCoin() {
 		currentCoins++;
-		totalCoins++;
-		// System.out.println("Current Score: " + currentCoins);
 		return currentCoins;
 	}
 

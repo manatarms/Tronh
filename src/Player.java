@@ -13,13 +13,16 @@ public class Player {
 	String direction;
 	int currentx;
 	int currenty;
+	boolean canRun;
 	
 	Image player_U, player_D, player_R, player_L;
 	
 	Player()
 	{
-		currentx = 10;
-		currenty = 10;
+		currentx = 20;
+		currenty = 20;
+		direction = "DOWN";
+		canRun = false;
 		
 		player_U = null;
 		player_D = null;
@@ -27,21 +30,20 @@ public class Player {
 		player_R = null;
 		
 	}
-      //public void Up(Graphics2D g, java.awt.Image image, int velocity, int x, int y){
-	 public void Move(int xh, int yh, int v){
-		if(direction == "right"){
+    public void Move(int xh, int yh, int v){
+		if(direction.equals("RIGHT") && canRun){
 			  xh += v;
 			  currentx = xh;
 			 
-		}else if(direction == "left"){
+		}else if(direction.equals("LEFT") && canRun){
 			  xh -= v;
 			  currentx = xh;
 		
-		}else if(direction == "up"){
+		}else if(direction.equals("UP") && canRun){
 		  yh -= v;
 		  currenty =yh;
 	
-		}else if(direction == "down"){
+		}else if(direction.equals("DOWN") && canRun){
 		  yh += v;
 		  currenty =yh;
 		}
@@ -51,8 +53,22 @@ public class Player {
 	 public int getX() {
 		return currentx;
 	}
+	 
 	 public int getY() {
 			return currenty;
+	}
+	 
+	 public boolean getCanRun() {
+			return canRun;
+	}
+	 
+	public void playerReset()
+	{
+		canRun = false;
+		currentx = 20;
+		currenty = 20;
+		direction = "DOWN";
+		
 	}
 	 
 	 public void setX(int newX) {
@@ -64,10 +80,10 @@ public class Player {
 		 
 	 public int getPlayerHeight(String dir)
 	 {
-		 if(dir == "up" || dir == "UP" || dir == "down" || dir == "DOWN")
+		 if(dir.equals("up") || dir.equals("UP") || dir.equals("down") || dir.equals("DOWN"))
 		 {
 			 return player_U.getHeight(null);
-		 }else if(dir == "left" || dir == "LEFT" || dir == "RIGHT" || dir == "right")
+		 }else if(dir.equals("left") || dir.equals("LEFT") || dir.equals("RIGHT") || dir.equals("right"))
 		 {
 			 return player_L.getHeight(null);
 		 }else{
@@ -77,10 +93,10 @@ public class Player {
 	 
 	 public int getPlayerWidth(String dir)
 	 {
-		 if(dir == "up" || dir == "UP" || dir == "down" || dir == "DOWN")
+		 if(dir.equals("up") || dir.equals("UP") || dir.equals("down") || dir.equals("DOWN"))
 		 {
 			 return player_U.getWidth(null);
-		 }else if(dir == "left" || dir == "LEFT" || dir == "RIGHT" || dir == "right")
+		 }else if(dir.equals("left") || dir.equals("LEFT") || dir.equals("RIGHT") || dir.equals("right"))
 		 {
 			 return player_L.getWidth(null);
 		 }else{
@@ -89,27 +105,21 @@ public class Player {
 	 }
 	 
 	 
-	 
-	 public int getWidth(String dir)
-	 {
-		 return 0;
-	 }
-	 boolean checkPressed(Input pl1)
+	 public void checkPressed(Input pl1)
 	 {
 		 if (pl1.pressed(Button.R)) {
-				direction = "right";
-				return true;
+				direction = "RIGHT";
+				canRun = true;
 			}else if (pl1.pressed(Button.L)) {
-				direction = "left";
-				return true;
+				direction = "LEFT";
+				canRun = true;
 			}else if (pl1.pressed(Button.U)) {
-				direction = "up";
-				return true;
+				direction = "UP";
+				canRun = true;
 			}else if (pl1.pressed(Button.D)) {
-				direction = "down";
-				return true;
+				direction = "DOWN";
+				canRun = true;
 			}
-		 return false;
 	 }
 	 
 	 public String getDirection()
@@ -119,24 +129,23 @@ public class Player {
 	 
 	 public void setDirection(String dir)
 	 {
-		 if(dir == "up" || dir == "UP")
+		 if(dir.equals("up") || dir.equals("UP"))
 		 {
-			 direction = "up";
-		 }else if(dir == "down" || dir == "DOWN")
+			 direction = "UP";
+		 }else if(dir.equals("down") || dir.equals("DOWN"))
 		 {
-			 direction = "down";
-		 }else if(dir == "left" || dir == "LEFT")
+			 direction = "DOWN";
+		 }else if(dir.equals("left") || dir.equals("LEFT"))
 		 {
-			 direction = "left";
-		 }else if(dir == "right" || dir == "RIGHT")
+			 direction = "LEFT";
+		 }else if(dir.equals("right") || dir.equals("RIGHT"))
 		 {
-			 direction = "right";
+			 direction = "RIGHT";
 		 }
 		 
 	 }
 	 
-	 public void drawPlayer(Graphics2D gh, int xh, int yh){
-		 Image player_U = null, player_D = null, player_R = null, player_L = null;
+	 public void drawPlayer(Graphics2D gh){
 		 
 			try {
 //				player_U = ImageIO.read(")
@@ -149,13 +158,13 @@ public class Player {
 				e.printStackTrace();
 			}
 			
-			if(direction == "up"){
+			if(direction == "UP"){
 				gh.drawImage(player_U,  getX(),  getY(), null);
-			}else if(direction == "down"){
+			}else if(direction == "DOWN"){
 				gh.drawImage(player_D,  getX(),  getY(), null);
-			}else if(direction == "left"){
+			}else if(direction == "LEFT"){
 				gh.drawImage(player_L,  getX(),  getY(), null);
-			}else if(direction == "right"){
+			}else if(direction == "RIGHT"){
 				gh.drawImage(player_R,  getX(),  getY(), null);
 			}
 	 }

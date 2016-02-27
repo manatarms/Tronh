@@ -13,7 +13,7 @@ final class Enemy {
 
 	private int Speed = 100;
 
-	public Enemy(int WIDTH, int HEIGHT) {
+	public Enemy() {
 		this.EnemyX = 950;
 		this.EnemyY = 500;
 		try {
