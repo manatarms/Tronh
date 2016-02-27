@@ -23,9 +23,9 @@ import sun.applet.Main;
 
 public class Tronh_Game extends Game {
 	
-	float y = 10;
-	float x = 10;
-	float velocity = 0;
+	int y = 10;
+	int x = 10;
+	
 	float gravity = .5f;
 	boolean canRun = false;
 	boolean right = false;
@@ -46,18 +46,19 @@ public class Tronh_Game extends Game {
 	int enemyX, enemyY;
 	int dir;
 	int enemySpeed =5;
+	int playerSpeed = 10;
 	String	collectsound ="src/sounds/collect.wav";
 	
-	Player p = new Player();
-
+	Player player = new Player();
+	
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
 			background = ImageIO.read(Tronh_Game.class.getResource("images/Background2.png"));
-			player_U = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_U.png"));
+			/*player_U = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_U.png"));
 			player_D = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_D.png"));
 			player_L = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_L.png"));
-			player_R = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_R.png"));
+			player_R = ImageIO.read(Tronh_Game.class.getResource("images/player1_test_R.png"));*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,74 +74,16 @@ public class Tronh_Game extends Game {
 		if(canRun == true){
 		sc.drawScore(g, 20,30,"Your score: ");
 		enemyScore.drawScore(g, 890,30,"Enemy score: ");
+		}
 		
-		}
-		if (p1.pressed(Button.R)) {
-			canRun = true;
-			right = true;
-			left = false;
-			up = false;
-			down = false;
-			dir = 3;
-		}
-		if (p1.pressed(Button.L)) {
-			canRun = true;
-			right = false;
-			left = true;
-			up = false;
-			down = false;
-			dir = 2;
-		}
-		if (p1.pressed(Button.U)) {
-			canRun = true;
-			right = false;
-			left = false;
-			up = true;
-			down = false;
-			dir = 1;
-		}
-		if (p1.pressed(Button.D)) {
-			canRun = true;
-			right = false;
-			left = false;
-			up = false;
-			down = true;
-			dir = 0;
-		}
-
-		if (canRun && right) {
-			g.drawImage(player_R, (int) x, (int) y, null);
-			velocity = 10;
-			x += velocity;
+		canRun = player.checkPressed(p1);
 		
-
-		}
-
-		if (canRun && left) {
-			g.drawImage(player_L, (int) x, (int) y, null);
-			velocity = 10;
-			x -= velocity;
-		
-		}
-
-		if (canRun && up) {
-			
-			/*g.drawImage(player_U, (int) x, (int) y, null);
-			velocity = 10;
-			y -= velocity;*/
-			y = p.Up(g, player_U, x, y, velocity);
-		}
-
-		if (canRun && down) {
-			g.drawImage(player_D, (int) x, (int) y, null);
-			velocity = 10;
-			y += velocity;
-		}
-
+		if(canRun){
+		player.Move(player.getX(),player.getY(), playerSpeed);
+		player.drawPlayer(g, player.getX(), player.getY());
+		}else{
 		// Player rendering
-		if (!canRun) {
-			g.drawImage(player_D, (int) x, (int) y, null);
-			
+			g.drawImage(player_D, player.getX(), player.getY(), null);	
 		}
 
 		int coinX = coin.getX(), coinY = coin.getY();
@@ -149,14 +92,14 @@ public class Tronh_Game extends Game {
 		Rectangle playerRect = null;
 		Rectangle enemyRectangle =null;
 		if (down || up || !canRun){
-			playerRect = new Rectangle((int) x, (int) y, player_U.getWidth(null), player_U.getHeight(null));
+			playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth("up"),player.getPlayerHeight("up"));
 			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),player_U.getWidth(null), player_U.getHeight(null));//hard coded this for now
 		}
 		if (left || right){
-			playerRect = new Rectangle((int) x, (int) y, player_L.getWidth(null), player_L.getHeight(null));
+			playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth("left"), player.getPlayerHeight("left"));
 			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),  player_L.getWidth(null), player_L.getHeight(null));//hard coded this for now
 		}
-		
+
 		//Checks collision
 		Rectangle coinRectangle = new Rectangle((int) coinX, (int) coinY, 20, 20);
 		//g.draw(coinRectangle);
@@ -197,8 +140,8 @@ public class Tronh_Game extends Game {
 		}
 
 		if (collision(playerRect, enemyRectangle)) {
-			y = 25;
-			x = 25;
+			player.setY(25);
+			player.setX(25);
 			enemy.resetEnemy();
 //			enemyTriggerCounter = 1;
 			canRun = false;
@@ -207,10 +150,10 @@ public class Tronh_Game extends Game {
 		}
 
 		// Reset Player out of bounds
-		if (outOfBounds((int) x, (int) y)) {
+		if (outOfBounds(player.getX(), player.getY())) {
 			// Reset Player method comes here using hard coded for now
-			y = 25;
-			x = 25;
+			player.setX(25);
+			player.setY(25);
 			canRun = false;
 			sc.resetCoin();
 			enemyScore.resetCoin();
