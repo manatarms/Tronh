@@ -47,6 +47,7 @@ public class Tronh_Game extends Game {
 	int dir;
 	int enemySpeed =5;
 	int playerSpeed = 10;
+	String enemyDirection = "UP";
 	String	collectsound ="src/sounds/collect.wav";
 	
 	Player player = new Player();
@@ -91,6 +92,10 @@ public class Tronh_Game extends Game {
 		// Check collisions based on player movement direction
 		Rectangle playerRect = null;
 		Rectangle enemyRectangle =null;
+		enemy.setDirection("up");
+	
+		//System.out.println(enemy.getHeight(enemy.getDirection()));
+		
 		if (down || up || !canRun){
 			playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth("up"),player.getPlayerHeight("up"));
 			enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(),player_U.getWidth(null), player_U.getHeight(null));//hard coded this for now
@@ -109,7 +114,7 @@ public class Tronh_Game extends Game {
 		if(canRun){
 		enemy.moveEnemy((int)coinX, (int)coinY,enemySpeed);
 		}
-		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), dir);
+		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
 		
 		if (collision(playerRect, coinRectangle)) {
 			coin = new Coin(WIDTH, HEIGHT);

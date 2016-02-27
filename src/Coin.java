@@ -1,5 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 //Class Coin
 final class Coin {
@@ -26,8 +32,8 @@ final class Coin {
 	}
 
 	public void drawCoin(Graphics2D g, int x, int y) {
-		g.setColor(Color.YELLOW);
-		g.fillOval(x, y, w, h);
+		Image image = Toolkit.getDefaultToolkit().createImage("e:/java/spin.gif");
+		g.drawImage(image, x, y, null);
 	}
 
 }// End Coin class
