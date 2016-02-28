@@ -71,6 +71,7 @@ final class Enemy {
 	public void resetEnemy() {
 		EnemyX = 950;
 		EnemyY = 500;
+		Direction = "UP";
 	}
 
 	public int speedUp(int speedup) {
@@ -107,14 +108,20 @@ final class Enemy {
 	public void moveEnemy(int playerX, int playerY, int speed) {
 		if (playerX > EnemyX) {
 			this.EnemyX = EnemyX + speed;
-		} else if (playerX < EnemyX) {
+			Direction = "RIGHT";
+		}
+		if (playerX < EnemyX) {
 			this.EnemyX = EnemyX - speed;
+			Direction = "LEFT";
 		}
 
 		if (playerY > EnemyY) {
 			this.EnemyY = EnemyY + speed;
-		} else if (playerY < EnemyY) {
+			Direction = "DOWN";
+		}
+		if (playerY < EnemyY) {
 			this.EnemyY = EnemyY - speed;
+			Direction = "UP";
 		}
 	}
 	
