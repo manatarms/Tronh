@@ -90,7 +90,7 @@ public class Tronh_Game extends Game {
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		
 		//Test code for collisions
-		//g.draw(coinRectangle);
+		g.draw(coinRectangle);
 		//g.draw(enemyRectangle);
 		//g.draw(playerRect);
 		
