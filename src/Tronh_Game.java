@@ -47,8 +47,7 @@ public class Tronh_Game extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Set default enemy direction on first play
-		enemy.setDirection("UP");
+		
 	}
 
 	@Override

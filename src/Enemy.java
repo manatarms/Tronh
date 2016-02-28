@@ -16,6 +16,7 @@ final class Enemy {
 	public Enemy() {
 		this.EnemyX = 950;
 		this.EnemyY = 500;
+		Direction = "UP";
 		try {
 			enemy_U = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_U.png"));
 			enemy_D = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_D.png"));
