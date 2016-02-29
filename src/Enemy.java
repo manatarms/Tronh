@@ -15,15 +15,15 @@ final class Enemy {
 	public Enemy() {
 		this.EnemyX = 950;
 		this.EnemyY = 500;
-		
-		//Implementation of GIFs
+
+		// Implementation of GIFs
 		ImageIcon eU, eD, eL, eR;
 
 		java.net.URL enemyU = getClass().getClassLoader().getResource("images/enemy_U.gif");
 		java.net.URL enemyD = getClass().getClassLoader().getResource("images/enemy_D.gif");
 		java.net.URL enemyL = getClass().getClassLoader().getResource("images/enemy_L.gif");
 		java.net.URL enemyR = getClass().getClassLoader().getResource("images/enemy_R.gif");
-		
+
 		if (enemyU != null || enemyD != null || enemyL != null || enemyR != null) {
 			eU = new ImageIcon(enemyU);
 			eD = new ImageIcon(enemyD);
@@ -33,8 +33,8 @@ final class Enemy {
 			System.err.println("Couldn't find an image file for enemy");
 			return;
 		}
-		
-		//Creating GIFs as Images
+
+		// Creating GIFs as Images
 		enemy_U = eU.getImage();
 		enemy_D = eD.getImage();
 		enemy_L = eL.getImage();
@@ -85,6 +85,7 @@ final class Enemy {
 	public void resetEnemy() {
 		EnemyX = 950;
 		EnemyY = 500;
+		Direction = "UP";
 	}
 
 	public int speedUp(int speedup) {
@@ -117,19 +118,26 @@ final class Enemy {
 	public void moveEnemy(int playerX, int playerY, int speed) {
 		if (playerX > EnemyX) {
 			this.EnemyX = EnemyX + speed;
-		} else if (playerX < EnemyX) {
+			Direction = "RIGHT";
+		}
+		if (playerX < EnemyX) {
 			this.EnemyX = EnemyX - speed;
+			Direction = "LEFT";
 		}
 
 		if (playerY > EnemyY) {
 			this.EnemyY = EnemyY + speed;
-		} else if (playerY < EnemyY) {
+			Direction = "DOWN";
+		}
+
+		if (playerY < EnemyY) {
 			this.EnemyY = EnemyY - speed;
+			Direction = "UP";
 		}
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y, String dir) {
-		
+
 		// DEFAULT (down)
 		if (dir.equals("down") || dir.equals("DOWN")) {
 			g.drawImage(enemy_D, x, y, null);

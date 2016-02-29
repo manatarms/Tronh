@@ -50,6 +50,7 @@ public class Tronh_Game extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		enemy.setDirection("UP");
 	}
 
 	@Override
@@ -64,7 +65,6 @@ public class Tronh_Game extends Game {
 		Rectangle playerRect = null;
 		Rectangle enemyRectangle = null;
 		Rectangle coinRectangle = null;
-		enemy.setDirection("UP");
 
 		// Rendering graphics
 		g.drawImage(background, 0, 0, null);
