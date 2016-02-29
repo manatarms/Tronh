@@ -20,7 +20,9 @@ import basicGame.BasicGame;
 import intro.IntroGame;
 
 public class Tronh_Game extends Game {
-	
+
+	int timecounter = 0;
+
 	Image banner, background;
 	boolean first = true;
 	boolean gotcoin = false;
@@ -28,98 +30,118 @@ public class Tronh_Game extends Game {
 	int highScore;
 	int maxCount = 1;
 	int trigger = 100;
-	
+
 	int enemySpeed = 5;
 	int playerSpeed = 10;
 	String enemyDirection = "UP";
-	String	collectsound ="src/sounds/collect.wav";
-	
+	String collectsound = "src/sounds/collect.wav";
+
+	PowerUp pup = new PowerUp(WIDTH, HEIGHT);
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
 	Score enemyScore = new Score();
 	Enemy enemy = new Enemy();
 	Player player = new Player();
-	
+
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
-			background = ImageIO.read(Tronh_Game.class.getResource("images/Background2.png"));
+			background = ImageIO.read(Tronh_Game.class.getResource("images/tronh_background.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {	
-		
-		//Setting the graphics objects
+	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
+
+		// Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		
-		//Initializations in tick
+
+		// Initializations in tick
 		int coinX = coin.getX(), coinY = coin.getY();
 		Rectangle playerRect = null;
-		Rectangle enemyRectangle =null;
-		Rectangle coinRectangle =null;
+		Rectangle enemyRectangle = null;
+		Rectangle coinRectangle = null;
 		enemy.setDirection("UP");
-		
+
 		// Rendering graphics
 		g.drawImage(background, 0, 0, null);
 		player.drawPlayer(g);
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
-		
-		//Checking if the player is active.
+
+		// Checking if the player is active.
 		player.checkPressed(p1);
-		
-		if(player.canRun){
-		//generate score	
-		sc.drawScore(g, 20,30,"Your score: ");
-		enemyScore.drawScore(g, 890,30,"Enemy score: ");
-		
-		//move player and enemy
-		player.Move(player.getX(),player.getY(), playerSpeed);
-		enemy.moveEnemy(coinX, coinY,enemySpeed);
-		
+
+		if (player.canRun) {
+			// generate score
+			sc.drawScore(g, 20, 30, "Your score: ");
+			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
+
+			// move player and enemy
+			player.Move(player.getX(), player.getY(), playerSpeed);
+			enemy.moveEnemy(coinX, coinY, enemySpeed);
 		}
 
-		
-		// Check collisions initialization	
-		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),player.getPlayerHeight(player.getDirection()));
- 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()), enemy.getEnemyHeight(enemy.getDirection()));//hard coded this for now
+		timecounter++;
+		if (timecounter == 100) {
+			timecounter = 0;
+			playerSpeed = 10;
+		}
+
+		// Check collisions initialization
+		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),
+				player.getPlayerHeight(player.getDirection()));
+		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
+				enemy.getEnemyHeight(enemy.getDirection()));// hard coded this
+															// for now
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
+		Rectangle powerUpRectangle = new Rectangle(pup.getX() - 60, pup.getY() - 60, 60, 60);
 		
-		//Test code for collisions
-		//g.draw(coinRectangle);
-		//g.draw(enemyRectangle);
+		//Check collisions
 		//g.draw(playerRect);
-		
-		
-		//Check collisions between player and enemy
+		//g.draw(enemyRectangle);
+		//g.draw(coinRectangle);
+		g.draw(powerUpRectangle);
+
+		// Check collisions between player and enemy
+
 		if (collision(playerRect, coinRectangle)) {
 			coin = new Coin(WIDTH, HEIGHT);
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			sc.addCoin();
-		    sc.saveScore();
-		    playSound(collectsound);		
+			sc.saveScore();
+			playSound(collectsound);
 		}
-		//Check collisions between enemy and coin
-		else if(collision(enemyRectangle, coinRectangle)){
+		// Check collisions between enemy and coin
+		else if (collision(enemyRectangle, coinRectangle)) {
 			coin = new Coin(WIDTH, HEIGHT);
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			enemyScore.addCoin();
 			enemyScore.saveScore();
 		}
-		//Check collision between player and enemy
+
+		else if (collision(playerRect, powerUpRectangle)) {
+			pup.setType();
+			pup = new PowerUp(WIDTH, HEIGHT);
+			timecounter = 0;
+		}
+
+		// Check collision between player and enemy
 		else if (collision(playerRect, enemyRectangle)) {
 			player.playerReset();
 			enemy.resetEnemy();
 			sc.resetCoin();
 			enemyScore.resetCoin();
+			playerSpeed = 10;
 		}
-		//Else no collisions
+
+		// Else no collisions
 		else {
 			coin.drawCoin(g, coin.getX(), coin.getY());
-		
+			g.draw(powerUpRectangle);
+			pup.setType();
 		}
 
 		// Reset Player out of bounds
@@ -128,12 +150,9 @@ public class Tronh_Game extends Game {
 			sc.resetCoin();
 			enemyScore.resetCoin();
 			enemy.resetEnemy();
+
 		}
-
 	}
-
-			
-	
 
 	@Override
 	public void reset() {
@@ -147,48 +166,48 @@ public class Tronh_Game extends Game {
 	}
 
 	// ----- Utilities for class -----
-	//-------------------------------------------------------------
-	
-	//Play sound method
-	public static void playSound( String url) {
-		 
-		 
-		try {
-	         // Open an audio input stream.           
-	          File soundFile = new File(url); //you could also get the sound file with an URL
-	       
-	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
-	         // Get a sound clip resource.
-	         Clip clip = AudioSystem.getClip();
-	         // Open audio clip and load samples from the audio input stream.
-	         clip.open(audioIn);
-	         clip.start();
-	      } catch (UnsupportedAudioFileException e) {
-	         e.printStackTrace();
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      } catch (LineUnavailableException e) {
-	         e.printStackTrace();
-	      }
-    }
+	// -------------------------------------------------------------
 
-	
+	// Play sound method
+	public static void playSound(String url) {
+
+		try {
+			// Open an audio input stream.
+			File soundFile = new File(url); // you could also get the sound file
+											// with an URL
+
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+			// Get a sound clip resource.
+			Clip clip = AudioSystem.getClip();
+			// Open audio clip and load samples from the audio input stream.
+			clip.open(audioIn);
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// Detect collision between rectangles
 	public boolean collision(Rectangle r, Rectangle q) {
 
 		if (r.intersects(q)) {
 			return true;
-		} 
+		} else
 			return false;
 	}
 
 	// Detect if player out of bounds
 	public boolean outOfBounds(int x, int y) {
 
-		if (x < 0 || x > WIDTH - player.getPlayerWidth(player.getDirection()) || y < 0 || y > HEIGHT - player.getPlayerHeight(player.getDirection())) {
+		if (x < 0 || x > WIDTH - player.getPlayerWidth(player.getDirection()) || y < 0
+				|| y > HEIGHT - player.getPlayerHeight(player.getDirection())) {
 			return true;
 		}
-			return false;
+		return false;
 	}
 
 	// Generate random numbers
@@ -196,7 +215,7 @@ public class Tronh_Game extends Game {
 		return Min + (float) (Math.random() * (Max - Min + 1));
 	}
 
-	//Main method
+	// Main method
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] { new Tronh_Game(), new IntroGame(), new BasicGame() }));
 	}

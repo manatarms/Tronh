@@ -42,7 +42,7 @@ public class Score {
 		currentCoins = 0;
 	}
 
-	public void drawScore(Graphics2D g, int x, int y,String text) {
+	public void drawScore(Graphics2D g, int x, int y, String text) {
 		/*
 		 * RANODM COLORS int rand = (int) (Math.random()*100)+1; if(rand > 0 &&
 		 * rand < 20) g.setColor(Color.BLUE);
