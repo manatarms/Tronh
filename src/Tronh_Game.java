@@ -50,7 +50,11 @@ public class Tronh_Game extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+<<<<<<< HEAD
 		enemy.setDirection("UP");
+=======
+		
+>>>>>>> 53e7f8369e88786c450a28f229cb4e3ce4f46a70
 	}
 
 	@Override
@@ -63,9 +67,14 @@ public class Tronh_Game extends Game {
 		// Initializations in tick
 		int coinX = coin.getX(), coinY = coin.getY();
 		Rectangle playerRect = null;
+<<<<<<< HEAD
 		Rectangle enemyRectangle = null;
 		Rectangle coinRectangle = null;
 
+=======
+		
+		
+>>>>>>> 53e7f8369e88786c450a28f229cb4e3ce4f46a70
 		// Rendering graphics
 		g.drawImage(background, 0, 0, null);
 		player.drawPlayer(g);
@@ -99,7 +108,11 @@ public class Tronh_Game extends Game {
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(pup.getX() - 60, pup.getY() - 60, 60, 60);
 		
-		//Check collisions
+<<<<<<< HEAD
+	
+=======
+		
+>>>>>>> 53e7f8369e88786c450a28f229cb4e3ce4f46a70
 		//g.draw(playerRect);
 		//g.draw(enemyRectangle);
 		//g.draw(coinRectangle);
