@@ -15,7 +15,6 @@ final class Enemy {
 	public Enemy() {
 		this.EnemyX = 950;
 		this.EnemyY = 500;
-<<<<<<< HEAD
 
 		// Implementation of GIFs
 		ImageIcon eU, eD, eL, eR;
@@ -33,18 +32,8 @@ final class Enemy {
 		} else {
 			System.err.println("Couldn't find an image file for enemy");
 			return;
-=======
-		Direction = "UP";
-		try {
-			enemy_U = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_U.png"));
-			enemy_D = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_D.png"));
-			enemy_L = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_L.png"));
-			enemy_R = ImageIO.read(Tronh_Game.class.getResource("images/enemy_test_R.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
->>>>>>> 53e7f8369e88786c450a28f229cb4e3ce4f46a70
 		}
+		Direction = "UP";
 
 		// Creating GIFs as Images
 		enemy_U = eU.getImage();
@@ -141,10 +130,7 @@ final class Enemy {
 			this.EnemyY = EnemyY + speed;
 			Direction = "DOWN";
 		}
-<<<<<<< HEAD
 
-=======
->>>>>>> 53e7f8369e88786c450a28f229cb4e3ce4f46a70
 		if (playerY < EnemyY) {
 			this.EnemyY = EnemyY - speed;
 			Direction = "UP";
