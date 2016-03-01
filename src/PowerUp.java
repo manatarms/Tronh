@@ -31,19 +31,15 @@ public class PowerUp {
 		return ypos;
 	}
 
-	public float SpeedUp(float velocity) {
-		System.out.println("v in SpeedUp: " + velocity);
+	public int SpeedUp(int velocity) {
 		velocity = 15;
-		System.out.println("v out SpeedUp: " + velocity);
 		return velocity;
 	}
 
-	public float SlowDown(float velocity) {
-		System.out.println("v in SlowDown: " + velocity);
-		velocity = 5;
+	public int SlowDown(int velocity) {
+		velocity = 2;
 		if (velocity <= 0)
 			velocity = 1;
-		System.out.println("v out SlowDown: " + velocity);
 		return velocity;
 	}
 
@@ -51,7 +47,7 @@ public class PowerUp {
 
 		if (getType().equals("Speed Up")) {
 			g.setColor(Color.BLUE);
-			String speed = "Spd + 2";
+			String speed = "Spd ++";
 			Font speedFont = new Font("Futura", Font.PLAIN, 15);
 			g.setFont(speedFont);
 			g.drawString(speed, x, y);
@@ -59,7 +55,7 @@ public class PowerUp {
 
 		if (getType().equals("Slow Down")) {
 			g.setColor(Color.BLUE);
-			String slow = "Spd - 2";
+			String slow = "Spd --";
 			Font slowFont = new Font("Futura", Font.PLAIN, 15);
 			g.setFont(slowFont);
 			g.drawString(slow, x, y);

@@ -21,7 +21,7 @@ import intro.IntroGame;
 
 public class Tronh_Game extends Game {
 
-	//int timecounter = 0;
+	int timecounter = 0;
 
 	Image banner, background;
 	boolean first = true;
@@ -32,7 +32,7 @@ public class Tronh_Game extends Game {
 	int trigger = 100;
 
 	int enemySpeed = 5;
-	public int playerSpeed = 10;
+	int playerSpeed = 10;
 	String enemyDirection = "UP";
 	String collectsound = "src/sounds/collect.wav";
 
@@ -81,20 +81,22 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
+			// System.out.println("v after player moves " + playerSpeed);
 		}
 
-		//timecounter++;
-		//if (timecounter == 1000000) {
-			//timecounter = 0;
-			//playerSpeed = 10;
-		//}
+		timecounter++;
+		if (timecounter == 1000) {
+			timecounter = 0;
+			playerSpeed = 10;
+			enemySpeed = 5;
+		}
 
 		// Check collisions initialization
 		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),
 				player.getPlayerHeight(player.getDirection()));
 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
 				enemy.getEnemyHeight(enemy.getDirection()));
-															
+
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
 
@@ -120,22 +122,18 @@ public class Tronh_Game extends Game {
 			enemyScore.saveScore();
 		}
 
-		//Speed up/ slow down player based on collision
+		// Speed up/ slow down based on collision
 		else if (collision(playerRect, powerUpRectangle)) {
 			if (powerUp.getType().equals("Speed Up")) {
-				System.out.println("speed.");
-				powerUp.SpeedUp(playerSpeed);
-				System.out.println("velocity (speed): " + playerSpeed);
+				playerSpeed = powerUp.SpeedUp(playerSpeed);
 			}
 			if (powerUp.getType().equals("Slow Down")) {
-				System.out.println("slows.");
-				powerUp.SlowDown(playerSpeed);
-				System.out.println("velocity (slow): " + playerSpeed);
+				enemySpeed = powerUp.SlowDown(enemySpeed);
 			}
 			powerUp.setType();
 			powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 			powerUp = new PowerUp(WIDTH, HEIGHT);
-			//timecounter = 0;
+			timecounter = 0;
 		}
 
 		// Check collision between player and enemy
