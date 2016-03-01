@@ -50,7 +50,6 @@ public class Tronh_Game extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		enemy.setDirection("UP");
 	}
 
 	@Override
@@ -94,8 +93,8 @@ public class Tronh_Game extends Game {
 		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),
 				player.getPlayerHeight(player.getDirection()));
 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
-				enemy.getEnemyHeight(enemy.getDirection()));// hard coded this
-															// for now
+				enemy.getEnemyHeight(enemy.getDirection()));
+															
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
 
@@ -207,8 +206,8 @@ public class Tronh_Game extends Game {
 
 		if (r.intersects(q)) {
 			return true;
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	// Detect if player out of bounds
