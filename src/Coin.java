@@ -29,7 +29,7 @@ final class Coin {
 
 	public void drawCoin(Graphics2D g, int x, int y) {
 		ImageIcon image = null;
-		
+
 		/** Returns an ImageIcon, or null if the path was invalid. */
 		java.net.URL imgURL = getClass().getClassLoader().getResource("images/coinh.gif");
 		if (imgURL != null) {
@@ -38,7 +38,7 @@ final class Coin {
 			System.err.println("Couldn't find file: images/coinh/gif");
 			return;
 		}
-		
+
 		Image img = image.getImage();
 		g.drawImage(img, x, y, null);
 

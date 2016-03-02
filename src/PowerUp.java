@@ -1,6 +1,8 @@
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class PowerUp {
 	private int xpos;
@@ -45,20 +47,21 @@ public class PowerUp {
 
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
+		Image fastah = null, slowah = null;
+
+		try {
+			fastah = ImageIO.read(Tronh_Game.class.getResource("images/fastah.png"));
+			slowah = ImageIO.read(Tronh_Game.class.getResource("images/slowah.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		if (getType().equals("Speed Up")) {
-			g.setColor(Color.BLUE);
-			String speed = "Spd ++";
-			Font speedFont = new Font("Futura", Font.PLAIN, 15);
-			g.setFont(speedFont);
-			g.drawString(speed, x, y);
+			g.drawImage(fastah, x, y, null);
 		}
 
 		if (getType().equals("Slow Down")) {
-			g.setColor(Color.BLUE);
-			String slow = "Spd --";
-			Font slowFont = new Font("Futura", Font.PLAIN, 15);
-			g.setFont(slowFont);
-			g.drawString(slow, x, y);
+			g.drawImage(slowah, x, y, null);
 		}
 	}
 
