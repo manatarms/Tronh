@@ -21,8 +21,6 @@ import intro.IntroGame;
 
 public class Tronh_Game extends Game {
 
-	int timecounter = 0;
-
 	Image banner, background;
 	boolean first = true;
 	boolean gotcoin = false;
@@ -30,6 +28,8 @@ public class Tronh_Game extends Game {
 	int highScore;
 	int maxCount = 1;
 	int trigger = 100;
+	int timecounter = 0;
+	int powerCount = 0;
 
 	int enemySpeed = 5;
 	int playerSpeed = 10;
@@ -82,13 +82,14 @@ public class Tronh_Game extends Game {
 			player.Move(player.getX(), player.getY(), playerSpeed);
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 			// System.out.println("v after player moves " + playerSpeed);
-		}
+			if (timecounter == 100) {
+				timecounter = 0;
+				playerSpeed = 10;
+				enemySpeed = 5;
 
-		timecounter++;
-		if (timecounter == 1000) {
-			timecounter = 0;
-			playerSpeed = 10;
-			enemySpeed = 5;
+			}
+			timecounter++;
+			System.out.println(timecounter);
 		}
 
 		// Check collisions initialization
@@ -113,6 +114,7 @@ public class Tronh_Game extends Game {
 			sc.addCoin();
 			sc.saveScore();
 			playSound(collectsound);
+			powerCount++;
 		}
 		// Check collisions between enemy and coin
 		else if (collision(enemyRectangle, coinRectangle)) {
@@ -123,17 +125,22 @@ public class Tronh_Game extends Game {
 		}
 
 		// Speed up/ slow down based on collision
-		else if (collision(playerRect, powerUpRectangle)) {
-			if (powerUp.getType().equals("Speed Up")) {
-				playerSpeed = powerUp.SpeedUp(playerSpeed);
+		if (collision(playerRect, powerUpRectangle)) {
+			
+			if (powerCount % 10 == 0 || powerCount > 10){
+				if (powerUp.getType().equals("Speed Up")) {
+					playerSpeed = powerUp.SpeedUp(playerSpeed);
+				}
+				if (powerUp.getType().equals("Slow Down")) {
+					enemySpeed = powerUp.SlowDown(enemySpeed);
+				}
+				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+				powerUp.setType();
+				powerUp = new PowerUp(WIDTH, HEIGHT);
+				timecounter = 0;
+				powerCount = 0;
 			}
-			if (powerUp.getType().equals("Slow Down")) {
-				enemySpeed = powerUp.SlowDown(enemySpeed);
-			}
-			powerUp.setType();
-			powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
-			powerUp = new PowerUp(WIDTH, HEIGHT);
-			timecounter = 0;
+
 		}
 
 		// Check collision between player and enemy
@@ -143,6 +150,8 @@ public class Tronh_Game extends Game {
 			sc.resetCoin();
 			enemyScore.resetCoin();
 			playerSpeed = 10;
+			enemySpeed = 5;
+			timecounter = 0;
 		}
 
 		// Else no collisions
@@ -158,6 +167,8 @@ public class Tronh_Game extends Game {
 			enemyScore.resetCoin();
 			enemy.resetEnemy();
 			playerSpeed = 10;
+			enemySpeed = 5;
+			timecounter = 0;
 
 		}
 	}
