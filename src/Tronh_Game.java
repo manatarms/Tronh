@@ -102,7 +102,7 @@ public class Tronh_Game extends Game {
 		// g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
-		g.draw(powerUpRectangle);
+		//g.draw(powerUpRectangle);
 
 		// Check collisions between player and enemy
 
