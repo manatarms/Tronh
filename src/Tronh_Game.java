@@ -125,7 +125,7 @@ public class Tronh_Game extends Game {
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
 
-			if ((powerCount % 10 == 0 && powerCount != 0) || powerCount >= 10) {
+			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				if (powerUp.getType().equals("Speed Up")) {
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
 				}
@@ -156,7 +156,7 @@ public class Tronh_Game extends Game {
 		// Else no collisions
 		else {
 			coin.drawCoin(g, coin.getX(), coin.getY());
-			if ((powerCount % 10 == 0 && powerCount != 0) || powerCount >= 10) {
+			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 			}
 		}

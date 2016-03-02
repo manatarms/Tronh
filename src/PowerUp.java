@@ -11,16 +11,16 @@ public class PowerUp {
 
 	public PowerUp(int WIDTH, int HEIGHT) {
 		setType();
-		setX(WIDTH, HEIGHT);
-		setY(WIDTH, HEIGHT);
+		setX(WIDTH);
+		setY(HEIGHT);
 	}
 
-	public void setX(int WIDTH, int HEIGHT) {
+	public void setX(int WIDTH) {
 		int minX = 50, maxX = (WIDTH - 10) - 50;
 		xpos = minX + (int) (Math.random() * ((maxX - minX) + 1));
 	}
 
-	public void setY(int WIDTH, int HEIGHT) {
+	public void setY(int HEIGHT) {
 		int minY = 50, maxY = (HEIGHT - 10) - 50;
 		ypos = minY + (int) (Math.random() * ((maxY - minY) + 1));
 	}
