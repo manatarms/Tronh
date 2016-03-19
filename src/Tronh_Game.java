@@ -33,6 +33,7 @@ public class Tronh_Game extends Game {
 
 	int enemySpeed = 5;
 	int playerSpeed = 10;
+	int bulletSpeed = 30;
 	String enemyDirection = "UP";
 	String collectsound = "src/sounds/collect.wav";
 
@@ -42,6 +43,7 @@ public class Tronh_Game extends Game {
 	Score enemyScore = new Score();
 	Enemy enemy = new Enemy();
 	Player player = new Player();
+	Shoot gun = new Shoot();
 
 	public Tronh_Game() {
 		try {
@@ -77,6 +79,9 @@ public class Tronh_Game extends Game {
 			// generate score
 			sc.drawScore(g, 20, 30, "Your score: ");
 			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
+			
+			//check if gun is fired
+			gun.checkTrigger(p1);
 
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
@@ -88,6 +93,19 @@ public class Tronh_Game extends Game {
 
 			}
 			timecounter++;
+		}
+		
+		//fires gun if triggered
+		//also checks if enemy was hit
+		if(gun.shootStatus)
+		{
+			gun.starter(player.getX(), player.getY(), player.getDirection());
+			gun.fire(bulletSpeed);
+			gun.drawBullet(g);
+			if(gun.hitCheck(enemy.getX(), enemy.getY()))
+			{
+				enemy.resetEnemy();
+			}
 		}
 
 		// Check collisions initialization

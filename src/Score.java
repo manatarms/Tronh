@@ -6,7 +6,7 @@ public class Score {
 	// Class Score
 
 	private int currentCoins;
-	private int highScore;
+	int highScore;
 
 	// Initializes score board
 	public Score() {
