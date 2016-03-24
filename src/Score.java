@@ -35,10 +35,6 @@ public class Score {
 
 	// Saves highscore and resets coinTotal when game ends
 	public void resetCoin() {
-		// System.out.println("Player Score: " + currentCoins);
-		// System.out.println("High Score : " + highScore);
-		// System.out.println("Total Score So Far: " + totalCoins);
-
 		currentCoins = 0;
 	}
 
