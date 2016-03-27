@@ -44,6 +44,7 @@ public class Tronh_Game extends Game {
 	Enemy enemy = new Enemy();
 	Player player = new Player();
 	Shoot gun = new Shoot();
+	Level level = new Level();
 
 	public Tronh_Game() {
 		try {
@@ -79,10 +80,13 @@ public class Tronh_Game extends Game {
 			// generate score
 			sc.drawScore(g, 20, 30, "Your score: ");
 			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
-			
+			//Show which level it is
+			level.drawLevel(g, 450, 30);
+			//check score and run new level
+			level.levelInitiate(sc.getNumCoins(), sc);
 			//check if gun is fired
 			gun.checkTrigger(p1);
-
+			
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
