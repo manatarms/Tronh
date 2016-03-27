@@ -10,6 +10,8 @@ public class Level {
 	{
 		currentLevel = 0;
 	}
+	
+	//sets what happens in each level, and changes level
 	void levelInitiate(int score, Score s)
 	{
 		if(LevelUpCheck(score))
@@ -33,6 +35,8 @@ public class Level {
 			
 		}
 	}
+	
+	//checks if score is high enough fo level up
 	boolean LevelUpCheck(int score)
 	{
 		if(score == 5)
@@ -42,11 +46,13 @@ public class Level {
 		return false;
 	}
 	
+	//resets back to level 0
 	public void levelReset()
 	{
 		currentLevel = 0;
 	}
 	
+	//prints the current level on the game screen
 	public void drawLevel(Graphics2D g, int x, int y)
 	{
 		g.setColor(Color.WHITE);

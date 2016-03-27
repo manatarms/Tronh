@@ -23,12 +23,14 @@ public class Shoot {
 		impact = false;
 	}
 	
+	//draws a white circular bullet
 	void drawBullet(Graphics2D gh)
 	{
 		gh.setColor(Color.WHITE);
 		gh.fillOval(bulletX, bulletY, 10, 10);
 	}
 	
+	//gets the position from where the shot is fired
 	void starter(int x, int y, String dir)
 	{
 		if(starter)
@@ -40,6 +42,7 @@ public class Shoot {
 		}
 	}
 	
+	//bullet movement and boundary collision check
 	void fire(int speed)
 	{
 		
@@ -65,6 +68,7 @@ public class Shoot {
 		
 	}
 	
+	//checks if you pulled the trigger ('~')
 	void checkTrigger(Input pl1)
 	{
 		if (pl1.pressed(Button.A)) {
@@ -72,6 +76,8 @@ public class Shoot {
 		}
 	}
 	
+	//checks bullet collision with the enemy
+	//must be made accurate..
 	boolean hitCheck(int enX, int enY)
 	{
 		if(((bulletX - 10 > enX) && (bulletX < enX + 85)) && ((bulletY - 10 > enY) && (bulletY < enY + 85)))
