@@ -89,6 +89,7 @@ public class Tronh_Game extends Game {
 			
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
+			
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 			if (timecounter == 100) {
 				timecounter = 0;
@@ -108,7 +109,8 @@ public class Tronh_Game extends Game {
 			gun.drawBullet(g);
 			if(gun.hitCheck(enemy.getX(), enemy.getY()))
 			{
-				enemy.resetEnemy();
+				enemySpeed = 0;
+				timecounter = 0;
 			}
 		}
 

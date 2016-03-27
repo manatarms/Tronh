@@ -39,7 +39,7 @@ public class Level {
 	//checks if score is high enough fo level up
 	boolean LevelUpCheck(int score)
 	{
-		if(score == 5)
+		if(score == 2)
 		{
 			return true;
 		}

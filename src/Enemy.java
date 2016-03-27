@@ -18,7 +18,7 @@ final class Enemy {
 
 		// Implementation of GIFs
 		ImageIcon eU, eD, eL, eR;
-
+		
 		java.net.URL enemyU = getClass().getClassLoader().getResource("images/enemy_U.gif");
 		java.net.URL enemyD = getClass().getClassLoader().getResource("images/enemy_D.gif");
 		java.net.URL enemyL = getClass().getClassLoader().getResource("images/enemy_L.gif");
