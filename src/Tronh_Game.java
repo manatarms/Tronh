@@ -107,7 +107,7 @@ public class Tronh_Game extends Game {
 			gun.starter(player.getX(), player.getY(), player.getDirection());
 			gun.fire(bulletSpeed);
 			gun.drawBullet(g);
-			if(gun.hitCheck(enemy.getX(), enemy.getY()))
+			if(gun.hitCheck(enemy))
 			{
 				enemySpeed = 0;
 				timecounter = 0;
