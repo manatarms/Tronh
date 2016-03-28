@@ -117,24 +117,38 @@ final class Enemy {
 	}
 
 	public void moveEnemy(int playerX, int playerY, int speed) {
-		if (playerX > EnemyX) {
-			this.EnemyX = EnemyX + speed;
-			Direction = "RIGHT";
-		}
+		
 		if (playerX < EnemyX) {
 			this.EnemyX = EnemyX - speed;
-			Direction = "LEFT";
+			}
+		if (playerX > EnemyX) {
+			this.EnemyX = EnemyX + speed;
 		}
-
-		if (playerY > EnemyY) {
-			this.EnemyY = EnemyY + speed;
-			Direction = "DOWN";
-		}
-
 		if (playerY < EnemyY) {
 			this.EnemyY = EnemyY - speed;
+		}
+		if (playerY > EnemyY) {
+			this.EnemyY = EnemyY + speed;
+		}
+		if (playerX > EnemyX && playerY > EnemyY ) {		
+			Direction = "DOWN";			
+		}
+		if (playerX < EnemyX && playerY < EnemyY) {
+			Direction = "UP";
+			}
+		if (playerX > EnemyX && playerY < EnemyY) {
 			Direction = "UP";
 		}
+		if (playerX < EnemyX && playerY > EnemyY) {
+			Direction = "DOWN";
+		}
+		if (playerY - EnemyY <= 5 && playerX < EnemyX) {
+			Direction = "LEFT";
+		}
+		if (playerY - EnemyY <= 5 && playerX > EnemyX) {
+			Direction = "RIGHT";
+		}
+			
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y, String dir) {
