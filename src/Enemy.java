@@ -149,6 +149,7 @@ final class Enemy {
 			Direction = "RIGHT";
 		}
 			
+			
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y, String dir) {

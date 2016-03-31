@@ -35,8 +35,13 @@ public class Tronh_Game extends Game {
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
 	String enemyDirection = "UP";
-	String collectsound = "src/sounds/collect.wav";
-
+	String collectSound = "src/sounds/collect.wav";
+	String collideSound = "src/sounds/collide.wav";
+	String powerupSound = "src/sounds/powerup.wav";
+	String enemycoinSound = "src/sounds/enemycoin.wav";
+	static String mainSound = "src/sounds/main.wav";
+	boolean maintrackPlayed = false;
+	
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
@@ -50,6 +55,7 @@ public class Tronh_Game extends Game {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
 			background = ImageIO.read(Tronh_Game.class.getResource("images/tronh_background.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +63,11 @@ public class Tronh_Game extends Game {
 
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
-
+		//Play game sound
+		if(!maintrackPlayed){
+		playSound(mainSound,true);
+		maintrackPlayed = true;
+		}
 		// Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -135,11 +145,12 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			sc.addCoin();
 			sc.saveScore();
-			playSound(collectsound);
+			playSound(collectSound,false);
 			powerCount += 1;
 		}
 		// Check collisions between enemy and coin
 		else if (collision(enemyRectangle, coinRectangle)) {
+			playSound(enemycoinSound,false);
 			coin = new Coin(WIDTH, HEIGHT);
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			enemyScore.addCoin();
@@ -148,7 +159,7 @@ public class Tronh_Game extends Game {
 
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
-
+		
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				if (powerUp.getType().equals("Speed Up")) {
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
@@ -159,6 +170,7 @@ public class Tronh_Game extends Game {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				powerUp.setType();
 				powerUp = new PowerUp(WIDTH, HEIGHT);
+				playSound(powerupSound,false);
 				timecounter = 0;
 				powerCount = 0;
 			}
@@ -167,6 +179,7 @@ public class Tronh_Game extends Game {
 
 		// Check collision between player and enemy
 		else if (collision(playerRect, enemyRectangle)) {
+			playSound(collideSound,false);
 			player.playerReset();
 			enemy.resetEnemy();
 			sc.resetCoin();
@@ -175,6 +188,7 @@ public class Tronh_Game extends Game {
 			enemySpeed = 5;
 			timecounter = 0;
 			powerCount = 0;
+			
 		}
 
 		// Else no collisions
@@ -213,7 +227,7 @@ public class Tronh_Game extends Game {
 	// -------------------------------------------------------------
 
 	// Play sound method
-	public static void playSound(String url) {
+	public static void playSound(String url,Boolean loop) {
 
 		try {
 			// Open an audio input stream.
@@ -226,6 +240,9 @@ public class Tronh_Game extends Game {
 			// Open audio clip and load samples from the audio input stream.
 			clip.open(audioIn);
 			clip.start();
+			if(loop){
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			}
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -262,6 +279,7 @@ public class Tronh_Game extends Game {
 	// Main method
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] { new Tronh_Game(), new IntroGame(), new BasicGame() }));
+		
 	}
 
 }// End Tronh class
