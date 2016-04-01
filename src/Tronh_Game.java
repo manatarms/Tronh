@@ -127,7 +127,6 @@ public class Tronh_Game extends Game {
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
-				System.out.println();
 			}
 			timecounter++;
 
@@ -222,6 +221,8 @@ public class Tronh_Game extends Game {
 
 			if (isForceField == true) {
 				enemy.resetEnemy();
+				powerUp.setType();
+				isForceField = false;
 			} else {
 				player.playerReset();
 				enemy.resetEnemy();
