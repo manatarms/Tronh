@@ -38,6 +38,9 @@ public class Tronh_Game extends Game {
 	String collectsound = "src/sounds/collect.wav";
 
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
+	boolean isForceField;
+	String prevType;
+
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
 	Score enemyScore = new Score();
@@ -79,31 +82,36 @@ public class Tronh_Game extends Game {
 			// generate score
 			sc.drawScore(g, 20, 30, "Your score: ");
 			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
-			
-			//check if gun is fired
+
+			// check if gun is fired
 			gun.checkTrigger(p1);
 
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
+
 			if (timecounter == 100) {
 				timecounter = 0;
 				playerSpeed = 10;
 				enemySpeed = 5;
-
+				isForceField = false;
+				System.out.println();
 			}
 			timecounter++;
+
+			if (isForceField == true && prevType != null) {
+				powerUp.drawForceField(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
+						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10), prevType);
+			}
 		}
-		
-		//fires gun if triggered
-		//also checks if enemy was hit
-		if(gun.shootStatus)
-		{
+
+		// fires gun if triggered
+		// also checks if enemy was hit
+		if (gun.shootStatus) {
 			gun.starter(player.getX(), player.getY(), player.getDirection());
 			gun.fire(bulletSpeed);
 			gun.drawBullet(g);
-			if(gun.hitCheck(enemy.getX(), enemy.getY()))
-			{
+			if (gun.hitCheck(enemy.getX(), enemy.getY())) {
 				enemy.resetEnemy();
 			}
 		}
@@ -120,7 +128,7 @@ public class Tronh_Game extends Game {
 		// g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
-		//g.draw(powerUpRectangle);
+		g.draw(powerUpRectangle);
 
 		// Check collisions between player and enemy
 
@@ -143,14 +151,26 @@ public class Tronh_Game extends Game {
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
 
-			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
-				if (powerUp.getType().equals("Speed Up")) {
+			if ((powerCount % 1 == 0 && powerCount != 0) || powerCount >= 1) {
+
+				if (powerUp.getType().equals("Speed Up") && isForceField == false) {
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
+					isForceField = false;
+					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
-				if (powerUp.getType().equals("Slow Down")) {
+				if (powerUp.getType().equals("Slow Down") && isForceField == false) {
 					enemySpeed = powerUp.SlowDown(enemySpeed);
+					isForceField = false;
+					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
-				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+				if (powerUp.getType() == "Force Field") {
+					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
+							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
+					isForceField = true;
+				}
+
+				powerUp.currDrawn = true;
+				prevType = powerUp.getType();
 				powerUp.setType();
 				powerUp = new PowerUp(WIDTH, HEIGHT);
 				timecounter = 0;
@@ -161,21 +181,29 @@ public class Tronh_Game extends Game {
 
 		// Check collision between player and enemy
 		else if (collision(playerRect, enemyRectangle)) {
-			player.playerReset();
-			enemy.resetEnemy();
-			sc.resetCoin();
-			enemyScore.resetCoin();
-			playerSpeed = 10;
-			enemySpeed = 5;
-			timecounter = 0;
-			powerCount = 0;
+			if (isForceField == true) {
+				enemy.resetEnemy();
+			} else {
+				player.playerReset();
+				enemy.resetEnemy();
+				sc.resetCoin();
+				enemyScore.resetCoin();
+				playerSpeed = 10;
+				enemySpeed = 5;
+				timecounter = 0;
+				powerCount = 0;
+			}
 		}
 
 		// Else no collisions
 		else {
 			coin.drawCoin(g, coin.getX(), coin.getY());
-			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
+			if ((powerCount % 1 == 0 && powerCount != 0) || powerCount >= 1) {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+			} else if (powerUp.getType() == "Force Field" && powerUp.currDrawn == true) {
+				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
+						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
+				System.out.println(powerUp.getType());
 			}
 		}
 

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.IOException;
@@ -8,6 +9,7 @@ public class PowerUp {
 	private int xpos;
 	private int ypos;
 	private String type;
+	boolean currDrawn;
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -51,10 +53,14 @@ public class PowerUp {
 			velocity = 1;
 		return velocity;
 	}
+	public void ForceField (Graphics2D g, int x, int y) {
+		g.drawOval(x, y, 70, 70);
+	}
 
 	// Renders PowerUp images
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
+		currDrawn = true;
 		Image fastah = null, slowah = null;
 
 		try {
@@ -72,15 +78,38 @@ public class PowerUp {
 		if (getType().equals("Slow Down")) {
 			g.drawImage(slowah, x, y, null);
 		}
+
+		if (getType().equals("Force Field")) {
+			g.setColor(Color.green);
+			g.drawOval(x, y, 70, 70);
+		}
+	}
+	
+	public void drawForceField(Graphics2D g, int x, int y, String s) {
+		currDrawn = true;
+		if (s.equals("Force Field")) {
+			g.setColor(Color.green);
+			g.drawOval(x, y, 70, 70);
+		}
+		else{
+			return;
+		}
 	}
 
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
-		int rand = (int) (Math.random() * 2) + 1;
-		if (rand == 1)
+		int rand = (int) (Math.random() * 3) + 1;
+		//int rand = 3;
+		if (rand == 1) {
 			type = "Speed Up";
-		else
+		}
+		if (rand == 2) {
 			type = "Slow Down";
+		}
+		if (rand == 3) {
+			type = "Force Field";
+		}
+
 	}
 
 	// Call for type
