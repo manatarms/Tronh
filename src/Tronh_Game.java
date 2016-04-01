@@ -1,10 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,6 +24,7 @@ import intro.IntroGame;
 public class Tronh_Game extends Game {
 
 	Image banner, background;
+    static Font customFont;
 	boolean first = true;
 	boolean gotcoin = false;
 	int coinTotal;
@@ -35,8 +38,13 @@ public class Tronh_Game extends Game {
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
 	String enemyDirection = "UP";
-	String collectsound = "src/sounds/collect.wav";
-
+	String collectSound = "src/sounds/collect.wav";
+	String collideSound = "src/sounds/collide.wav";
+	String powerupSound = "src/sounds/powerup.wav";
+	String enemycoinSound = "src/sounds/enemycoin.wav";
+	static String mainSound = "src/sounds/main.wav";
+	boolean maintrackPlayed = false;
+	
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	boolean isForceField;
 	String prevType;
@@ -47,19 +55,36 @@ public class Tronh_Game extends Game {
 	Enemy enemy = new Enemy();
 	Player player = new Player();
 	Shoot gun = new Shoot();
+	Level level = new Level();
 
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
 			background = ImageIO.read(Tronh_Game.class.getResource("images/tronh_background.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		//register a new font
+		try {
+			 customFont = Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")).deriveFont(12f);
+		     GraphicsEnvironment ge = 
+		         GraphicsEnvironment.getLocalGraphicsEnvironment();
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
+		   System.out.println(ge.getAvailableFontFamilyNames());
+		} catch (IOException|FontFormatException e) {
+		     e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
-
+		//Play game sound
+		if(!maintrackPlayed){
+		playSound(mainSound,true);
+		maintrackPlayed = true;
+		}
 		// Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -81,13 +106,22 @@ public class Tronh_Game extends Game {
 		if (player.canRun) {
 			// generate score
 			sc.drawScore(g, 20, 30, "Your score: ");
-			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
+<<<<<<< HEAD
 
 			// check if gun is fired
+=======
+			enemyScore.drawScore(g, 830, 30, "Enemy score: ");
+			//Show which level it is
+			level.drawLevel(g, 450, 30);
+			//check score and run new level
+			level.levelInitiate(sc.getNumCoins(), sc);
+			//check if gun is fired
+>>>>>>> 90ce0fbc1b8272ce7bee65ad8910424f73e6c348
 			gun.checkTrigger(p1);
-
+			
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
+			
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (timecounter == 100) {
@@ -111,8 +145,14 @@ public class Tronh_Game extends Game {
 			gun.starter(player.getX(), player.getY(), player.getDirection());
 			gun.fire(bulletSpeed);
 			gun.drawBullet(g);
-			if (gun.hitCheck(enemy.getX(), enemy.getY())) {
-				enemy.resetEnemy();
+<<<<<<< HEAD
+
+=======
+			if(gun.hitCheck(enemy))
+			{
+				enemySpeed = 0;
+				timecounter = 0;
+>>>>>>> 90ce0fbc1b8272ce7bee65ad8910424f73e6c348
 			}
 		}
 
@@ -137,8 +177,8 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			sc.addCoin();
 			sc.saveScore();
-			playSound(collectsound);
 			powerCount += 1;
+			playSound(collectSound,false);
 		}
 		// Check collisions between enemy and coin
 		else if (collision(enemyRectangle, coinRectangle)) {
@@ -146,14 +186,20 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			enemyScore.addCoin();
 			enemyScore.saveScore();
+			playSound(enemycoinSound,false);
 		}
 
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
+<<<<<<< HEAD
 
-			if ((powerCount % 1 == 0 && powerCount != 0) || powerCount >= 1) {
+			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 
 				if (powerUp.getType().equals("Speed Up") && isForceField == false) {
+=======
+		
+
+>>>>>>> 90ce0fbc1b8272ce7bee65ad8910424f73e6c348
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
 					isForceField = false;
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
@@ -175,12 +221,14 @@ public class Tronh_Game extends Game {
 				powerUp = new PowerUp(WIDTH, HEIGHT);
 				timecounter = 0;
 				powerCount = 0;
+				playSound(powerupSound,false);
 			}
 
 		}
 
 		// Check collision between player and enemy
 		else if (collision(playerRect, enemyRectangle)) {
+<<<<<<< HEAD
 			if (isForceField == true) {
 				enemy.resetEnemy();
 			} else {
@@ -193,6 +241,9 @@ public class Tronh_Game extends Game {
 				timecounter = 0;
 				powerCount = 0;
 			}
+=======
+
+>>>>>>> 90ce0fbc1b8272ce7bee65ad8910424f73e6c348
 		}
 
 		// Else no collisions
@@ -235,7 +286,7 @@ public class Tronh_Game extends Game {
 	// -------------------------------------------------------------
 
 	// Play sound method
-	public static void playSound(String url) {
+	public static void playSound(String url,Boolean loop) {
 
 		try {
 			// Open an audio input stream.
@@ -248,6 +299,9 @@ public class Tronh_Game extends Game {
 			// Open audio clip and load samples from the audio input stream.
 			clip.open(audioIn);
 			clip.start();
+			if(loop){
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			}
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -284,6 +338,7 @@ public class Tronh_Game extends Game {
 	// Main method
 	public static void main(String[] args) {
 		Arcadia.display(new Arcadia(new Game[] { new Tronh_Game(), new IntroGame(), new BasicGame() }));
+		
 	}
 
 }// End Tronh class

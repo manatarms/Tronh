@@ -18,7 +18,7 @@ final class Enemy {
 
 		// Implementation of GIFs
 		ImageIcon eU, eD, eL, eR;
-
+		
 		java.net.URL enemyU = getClass().getClassLoader().getResource("images/enemy_U.gif");
 		java.net.URL enemyD = getClass().getClassLoader().getResource("images/enemy_D.gif");
 		java.net.URL enemyL = getClass().getClassLoader().getResource("images/enemy_L.gif");
@@ -117,24 +117,39 @@ final class Enemy {
 	}
 
 	public void moveEnemy(int playerX, int playerY, int speed) {
-		if (playerX > EnemyX) {
-			this.EnemyX = EnemyX + speed;
-			Direction = "RIGHT";
-		}
+		
 		if (playerX < EnemyX) {
 			this.EnemyX = EnemyX - speed;
-			Direction = "LEFT";
+			}
+		if (playerX > EnemyX) {
+			this.EnemyX = EnemyX + speed;
 		}
-
-		if (playerY > EnemyY) {
-			this.EnemyY = EnemyY + speed;
-			Direction = "DOWN";
-		}
-
 		if (playerY < EnemyY) {
 			this.EnemyY = EnemyY - speed;
+		}
+		if (playerY > EnemyY) {
+			this.EnemyY = EnemyY + speed;
+		}
+		if (playerX > EnemyX && playerY > EnemyY ) {		
+			Direction = "DOWN";			
+		}
+		if (playerX < EnemyX && playerY < EnemyY) {
+			Direction = "UP";
+			}
+		if (playerX > EnemyX && playerY < EnemyY) {
 			Direction = "UP";
 		}
+		if (playerX < EnemyX && playerY > EnemyY) {
+			Direction = "DOWN";
+		}
+		if (playerY - EnemyY <= 5 && playerX < EnemyX) {
+			Direction = "LEFT";
+		}
+		if (playerY - EnemyY <= 5 && playerX > EnemyX) {
+			Direction = "RIGHT";
+		}
+			
+			
 	}
 
 	public void drawEnemy(Graphics2D g, int x, int y, String dir) {
