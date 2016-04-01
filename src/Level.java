@@ -17,7 +17,7 @@ public class Level {
 		if(LevelUpCheck(score))
 		{
 			currentLevel++;
-			s.resetCoin();
+			//s.resetCoin();
 		}
 		
 		if(currentLevel == 0)
@@ -57,8 +57,7 @@ public class Level {
 	{
 		g.setColor(Color.WHITE);
 		String level = "Level: " + currentLevel;
-		Font f = new Font("Futura", Font.PLAIN, 15);
-		g.setFont(f);
+		g.setFont(Tronh_Game.customFont);
 		g.drawString(level, x, y);
 	}
 	

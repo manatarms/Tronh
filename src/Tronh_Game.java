@@ -1,10 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,6 +24,7 @@ import intro.IntroGame;
 public class Tronh_Game extends Game {
 
 	Image banner, background;
+    static Font customFont;
 	boolean first = true;
 	boolean gotcoin = false;
 	int coinTotal;
@@ -59,6 +62,17 @@ public class Tronh_Game extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		//register a new font
+		try {
+			 customFont = Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")).deriveFont(12f);
+		     GraphicsEnvironment ge = 
+		         GraphicsEnvironment.getLocalGraphicsEnvironment();
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
+		   System.out.println(ge.getAvailableFontFamilyNames());
+		} catch (IOException|FontFormatException e) {
+		     e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -89,7 +103,7 @@ public class Tronh_Game extends Game {
 		if (player.canRun) {
 			// generate score
 			sc.drawScore(g, 20, 30, "Your score: ");
-			enemyScore.drawScore(g, 890, 30, "Enemy score: ");
+			enemyScore.drawScore(g, 830, 30, "Enemy score: ");
 			//Show which level it is
 			level.drawLevel(g, 450, 30);
 			//check score and run new level
@@ -145,16 +159,16 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			sc.addCoin();
 			sc.saveScore();
-			playSound(collectSound,false);
 			powerCount += 1;
+			playSound(collectSound,false);
 		}
 		// Check collisions between enemy and coin
 		else if (collision(enemyRectangle, coinRectangle)) {
-			playSound(enemycoinSound,false);
 			coin = new Coin(WIDTH, HEIGHT);
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			enemyScore.addCoin();
 			enemyScore.saveScore();
+			playSound(enemycoinSound,false);
 		}
 
 		// Speed up/ slow down based on collision
@@ -170,16 +184,15 @@ public class Tronh_Game extends Game {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				powerUp.setType();
 				powerUp = new PowerUp(WIDTH, HEIGHT);
-				playSound(powerupSound,false);
 				timecounter = 0;
 				powerCount = 0;
+				playSound(powerupSound,false);
 			}
 
 		}
 
 		// Check collision between player and enemy
 		else if (collision(playerRect, enemyRectangle)) {
-			playSound(collideSound,false);
 			player.playerReset();
 			enemy.resetEnemy();
 			sc.resetCoin();
@@ -188,7 +201,7 @@ public class Tronh_Game extends Game {
 			enemySpeed = 5;
 			timecounter = 0;
 			powerCount = 0;
-			
+			playSound(collideSound,false);
 		}
 
 		// Else no collisions

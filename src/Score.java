@@ -1,13 +1,14 @@
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Font;
+import java.awt.Graphics2D;
 
 public class Score {
 	// Class Score
 
 	private int currentCoins;
 	int highScore;
-
+	
+	
 	// Initializes score board
 	public Score() {
 		highScore = 0;
@@ -56,15 +57,14 @@ public class Score {
 		 * color changes based off score if((currentCoins/2)*2 == currentCoins)
 		 * g.setColor(Color.BLUE); else g.setColor(Color.GREEN);
 		 */
-		g.setColor(Color.WHITE);
+		g.setColor( new Color (157,241, 55));
+		//g.setColor(Color.GREEN);
 		String s = text + currentCoins;
 		String hs = "High Score: " + highScore;
-		Font f = new Font("Futura", Font.PLAIN, 15);
-		g.setFont(f);
+	    //	Font f = new Font("Futura", Font.PLAIN, 15);
+		//g.setFont(f);
+		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
-
-		Font f2 = new Font("Futura", Font.PLAIN, 15);
-		g.setFont(f2);
 		g.drawString(hs, x, y + 20);
 
 	}
