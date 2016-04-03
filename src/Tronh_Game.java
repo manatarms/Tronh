@@ -56,7 +56,6 @@ public class Tronh_Game extends Game {
 	Player player = new Player();
 	Shoot gun = new Shoot();
 	Level level = new Level();
-	
 	long startTime = 0;
 
 	public Tronh_Game() {
