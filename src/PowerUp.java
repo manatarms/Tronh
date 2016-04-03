@@ -10,6 +10,7 @@ public class PowerUp {
 	private int ypos;
 	private String type;
 	boolean currDrawn;
+	int currRand;
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -99,6 +100,11 @@ public class PowerUp {
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
 		int rand = (int) (Math.random() * 3) + 1;
+		
+		if (currRand == 3 && rand == 3){
+			rand = (int) (Math.random() * 2) + 1;
+		}
+		
 		//int rand = 3;
 		if (rand == 1) {
 			type = "Speed Up";
@@ -109,6 +115,7 @@ public class PowerUp {
 		if (rand == 3) {
 			type = "Force Field";
 		}
+		currRand = rand;
 
 	}
 
