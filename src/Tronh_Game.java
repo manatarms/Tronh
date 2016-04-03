@@ -60,7 +60,6 @@ public class Tronh_Game extends Game {
 	Shoot gun = new Shoot();
 	Level level = new Level();
 	
-	long startTime = 0;
 
 	public Tronh_Game() {
 		try {
@@ -134,8 +133,6 @@ public class Tronh_Game extends Game {
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
-				long endTime = System.nanoTime();
-				System.out.println("PowerUp time: " + (endTime-startTime));
 			}
 			
 			if(timeLeft==0)
@@ -226,8 +223,6 @@ public class Tronh_Game extends Game {
 							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
 					isForceField = true;
 				}
-				
-				startTime = System.nanoTime();
 
 				powerUp.currDrawn = true;
 				prevType = powerUp.getType();
