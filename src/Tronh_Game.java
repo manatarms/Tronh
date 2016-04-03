@@ -34,6 +34,9 @@ public class Tronh_Game extends Game {
 	int timecounter = 0;
 	int powerCount = 0;
 
+	boolean hasPower = false;
+	int timeLeft = 150;
+	
 	int enemySpeed = 5;
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
@@ -133,7 +136,20 @@ public class Tronh_Game extends Game {
 				long endTime = System.nanoTime();
 				System.out.println("PowerUp time: " + (endTime-startTime));
 			}
+			
+			if(timeLeft==0)
+			{
+				hasPower=false;
+				timeLeft=150;
+			}
+			
 			timecounter++;
+			
+			if(hasPower)
+			{
+				timeLeft--;
+				powerUp.drawTimer(g,100,100,timeLeft);
+			}
 
 			if (isForceField == true && prevType != null) {
 				powerUp.drawForceField(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
@@ -167,7 +183,7 @@ public class Tronh_Game extends Game {
 		// g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
-		// g.draw(powerUpRectangle);
+		 g.draw(powerUpRectangle);
 
 		// Check collisions between player and enemy
 
@@ -190,7 +206,7 @@ public class Tronh_Game extends Game {
 
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
-
+            hasPower=true;
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 
 				if (powerUp.getType().equals("Speed Up") && isForceField == false) {
@@ -221,6 +237,8 @@ public class Tronh_Game extends Game {
 				playSound(powerupSound, false);
 			}
 
+            if(!hasPower)
+            	powerUp.drawTimer(g,100,100,timeLeft);
 		}
 
 		// Check collision between player and enemy
@@ -240,6 +258,8 @@ public class Tronh_Game extends Game {
 				timecounter = 0;
 				powerCount = 0;
 				playSound(collideSound,false);
+				hasPower=false;
+				timeLeft=150;
 			}
 		}
 
@@ -266,6 +286,8 @@ public class Tronh_Game extends Game {
 			timecounter = 0;
 			powerCount = 0;
 			playSound(collideSound,false);
+			hasPower=false;
+			timeLeft=150;
 		}
 	}
 
