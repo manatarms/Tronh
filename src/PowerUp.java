@@ -99,10 +99,11 @@ public class PowerUp {
 
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
-		int rand = (int) (Math.random() * 3) + 1;
+		//int rand = (int) (Math.random() * 3) + 1;
+		int rand = (int)Tronh_Game.randFloat(1, 3);
 		
 		if (currRand == 3 && rand == 3){
-			rand = (int) (Math.random() * 2) + 1;
+		 rand = (int)Tronh_Game.randFloat(1, 2);
 		}
 		
 		//int rand = 3;
