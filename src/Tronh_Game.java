@@ -232,6 +232,7 @@ public class Tronh_Game extends Game {
 				enemySpeed = 5;
 				timecounter = 0;
 				powerCount = 0;
+				playSound(collideSound,false);
 			}
 		}
 
@@ -257,6 +258,7 @@ public class Tronh_Game extends Game {
 			enemySpeed = 5;
 			timecounter = 0;
 			powerCount = 0;
+			playSound(collideSound,false);
 		}
 	}
 
