@@ -33,6 +33,7 @@ public class Tronh_Game extends Game {
 	int trigger = 100;
 	int timecounter = 0;
 	int powerCount = 0;
+	boolean pickUpDelay = true;
 
 	boolean hasPower = false;
 	int timeLeft = 150;
@@ -118,7 +119,7 @@ public class Tronh_Game extends Game {
 			level.drawLevel(g, 450, 30);
 			
 			// check score and run new level
-			level.levelInitiate(sc.getNumCoins(), sc);
+			pickUpDelay = level.levelUp(sc.getNumCoins(), pickUpDelay);
 			
 			// check if gun is fired
 			gun.checkTrigger(p1);

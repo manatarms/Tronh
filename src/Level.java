@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Level {
@@ -12,40 +11,32 @@ public class Level {
 	}
 	
 	//sets what happens in each level, and changes level
-	void levelInitiate(int score, Score s)
+	boolean levelUp(int score, boolean pickupdelay)
 	{
-		if(LevelUpCheck(score))
+		if((score % 5 == 0) && (pickupdelay))
 		{
 			currentLevel++;
-			//s.resetCoin();
+//			if(currentLevel == 0)
+//			{
+//				
+//			}
+//		
+//			if(currentLevel == 1)
+//			{
+//			
+//			}
+//		
+//			if(currentLevel == 1)
+//			{
+//			
+//			}
 		}
-		
-		if(currentLevel == 0)
-		{
-	//		System.out.println("Hello World");
-		}
-		
-		if(currentLevel == 1)
-		{
-			
-		}
-		
-		if(currentLevel == 1)
-		{
-			
-		}
-	}
-	
-	//checks if score is high enough fo level up
-	boolean LevelUpCheck(int score)
-	{
-		if(score == 2)
-		{
+		if(score % 5 > 0){
 			return true;
 		}
 		return false;
 	}
-	
+
 	//resets back to level 0
 	public void levelReset()
 	{
