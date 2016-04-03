@@ -126,7 +126,7 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-			enemy.moveEnemy(coinX, coinY, enemySpeed);
+		//	enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (timecounter == 100) {
 				timecounter = 0;

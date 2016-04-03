@@ -123,7 +123,7 @@ public class PowerUp {
 	public void drawTimer(Graphics2D g, int x, int y, int timeLeft)
 	{
 		g.setColor(Color.WHITE);
-		String s = "" + (timeLeft/30 + 1);
+		String s = getType() + (timeLeft/30 + 1);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
 	}
