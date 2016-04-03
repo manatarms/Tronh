@@ -59,7 +59,9 @@ public class Tronh_Game extends Game {
 	Player player = new Player();
 	Shoot gun = new Shoot();
 	Level level = new Level();
-	
+
+	long startTime = 0;
+
 
 	public Tronh_Game() {
 		try {
@@ -126,13 +128,17 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-			enemy.moveEnemy(coinX, coinY, enemySpeed);
+			//enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (timecounter == 100) {
 				timecounter = 0;
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
+
+				//long endTime = System.nanoTime();
+				//System.out.println("PowerUp time: " + (endTime-startTime));
+
 			}
 			
 			if(timeLeft==0)
@@ -345,7 +351,7 @@ public class Tronh_Game extends Game {
 	}
 
 	// Generate random numbers
-	public float randFloat(float Min, float Max) {
+	public static float randFloat(float Min, float Max) {
 		return Min + (float) (Math.random() * (Max - Min + 1));
 	}
 

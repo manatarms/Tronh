@@ -11,8 +11,8 @@ final class Coin {
 
 	// Renders Coinh position
 	public Coin(int WIDTH, int HEIGHT) {
-		int minX = 50, maxX = (WIDTH - 10) - w;
-		int minY = 50, maxY = (HEIGHT - 10) - h;
+		int minX = 60, maxX = (WIDTH - 60) - w;
+		int minY = 60, maxY = (HEIGHT - 60) - h;
 		int randX = minX + (int) (Math.random() * ((maxX - minX) + 1));
 		int randY = minY + (int) (Math.random() * ((maxY - minY) + 1));
 		this.Coinx = randX;
