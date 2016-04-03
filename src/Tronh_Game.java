@@ -59,6 +59,8 @@ public class Tronh_Game extends Game {
 	Player player = new Player();
 	Shoot gun = new Shoot();
 	Level level = new Level();
+	
+	long startTime = 0;
 
 	public Tronh_Game() {
 		try {
@@ -112,12 +114,14 @@ public class Tronh_Game extends Game {
 			sc.drawScore(g, 20, 30, "Your score: ");
 
 			enemyScore.drawScore(g, 830, 30, "Enemy score: ");
+			
 			// Show which level it is
 			level.drawLevel(g, 450, 30);
+			
 			// check score and run new level
 			level.levelInitiate(sc.getNumCoins(), sc);
+			
 			// check if gun is fired
-
 			gun.checkTrigger(p1);
 
 			// move player and enemy
@@ -130,6 +134,8 @@ public class Tronh_Game extends Game {
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
+				long endTime = System.nanoTime();
+				System.out.println("PowerUp time: " + (endTime-startTime));
 			}
 			
 			if(timeLeft==0)
@@ -220,6 +226,8 @@ public class Tronh_Game extends Game {
 							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
 					isForceField = true;
 				}
+				
+				startTime = System.nanoTime();
 
 				powerUp.currDrawn = true;
 				prevType = powerUp.getType();
@@ -285,9 +293,7 @@ public class Tronh_Game extends Game {
 	}
 
 	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-	}
+	public void reset() {}
 
 	@Override
 	public Image banner() {
