@@ -86,6 +86,7 @@ public class Tronh_Game extends Game {
 
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
+		System.out.println(powerUp.currRand);
 		// Play game sound
 		if (!maintrackPlayed) {
 			playSound(mainSound, true);
@@ -119,7 +120,7 @@ public class Tronh_Game extends Game {
 			level.drawLevel(g, 450, 30);
 			
 			// check score and run new level
-			pickUpDelay = level.levelUp(sc.getNumCoins(), pickUpDelay);
+			pickUpDelay = level.levelUp(sc.getHighScore(), pickUpDelay);
 			
 			// check if gun is fired
 			gun.checkTrigger(p1);
@@ -127,7 +128,7 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-		//	enemy.moveEnemy(coinX, coinY, enemySpeed);
+			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (timecounter == 100) {
 				timecounter = 0;
@@ -205,7 +206,7 @@ public class Tronh_Game extends Game {
 			playSound(enemycoinSound, false);
 		}
 
-		// Speed up/ slow down based on collision
+		// Collision between player and power-Up
 		if (collision(playerRect, powerUpRectangle)) {
             hasPower=true;
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
@@ -238,7 +239,7 @@ public class Tronh_Game extends Game {
 				playSound(powerupSound, false);
 			}
 
-            if(!hasPower)
+            if(hasPower)
             	powerUp.drawTimer(g,100,100,timeLeft);
 		}
 
