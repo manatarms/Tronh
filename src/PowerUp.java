@@ -11,6 +11,7 @@ public class PowerUp {
 	private String type;
 	boolean currDrawn;
 	int currRand;
+	private String prevType;
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -54,7 +55,8 @@ public class PowerUp {
 			velocity = 1;
 		return velocity;
 	}
-	public void ForceField (Graphics2D g, int x, int y) {
+
+	public void ForceField(Graphics2D g, int x, int y) {
 		g.drawOval(x, y, 70, 70);
 	}
 
@@ -62,11 +64,12 @@ public class PowerUp {
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
 		currDrawn = true;
-		Image fastah = null, slowah = null;
+		Image fastah = null, slowah = null, forceField = null;
 
 		try {
 			fastah = ImageIO.read(Tronh_Game.class.getResource("images/fastah.png"));
 			slowah = ImageIO.read(Tronh_Game.class.getResource("images/slowah.png"));
+			forceField = ImageIO.read(Tronh_Game.class.getResource("images/ForceField.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,32 +84,36 @@ public class PowerUp {
 		}
 
 		if (getType().equals("Force Field")) {
-			g.setColor(Color.green);
-			g.drawOval(x, y, 70, 70);
+			g.drawImage(forceField, x, y, null);
 		}
 	}
-	
+
 	public void drawForceField(Graphics2D g, int x, int y, String s) {
+
 		currDrawn = true;
-		if (s.equals("Force Field")) {
-			g.setColor(Color.green);
-			g.drawOval(x, y, 70, 70);
+		Image forceField = null;
+		
+		try {
+			forceField = ImageIO.read(Tronh_Game.class.getResource("images/ForceField.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else{
+
+		
+		if (s.equals("Force Field")) {
+			g.drawImage(forceField, x, y, null);
+		} else {
 			return;
 		}
 	}
 
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
-		//int rand = (int) (Math.random() * 3) + 1;
-		int rand = (int)Tronh_Game.randFloat(1, 3);
 		
-		if (currRand == 3 && rand == 3){
-		 rand = (int)Tronh_Game.randFloat(1, 2);
-		}
+		setPrevType(type);
 		
-		//int rand = 3;
+		int rand = (int) Tronh_Game.randFloat(1, 3);
+
 		if (rand == 1) {
 			type = "Speed Up";
 		}
@@ -120,18 +127,23 @@ public class PowerUp {
 
 	}
 
-	public void drawTimer(Graphics2D g, int x, int y, int timeLeft)
-	{
+	public void drawTimer(Graphics2D g, int x, int y, int timeLeft) {
 		g.setColor(Color.WHITE);
-		String s = "" + (timeLeft/30 + 1);
+		String s = "" + (timeLeft / 30 + 1);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
 	}
-	
-	
+
 	// Call for type
 	public String getType() {
 		return type;
+	}
+	
+	public String prevType() {
+		return prevType;
+	}
+	public void setPrevType(String s){
+		prevType = s;
 	}
 
 }

@@ -36,7 +36,7 @@ public class Tronh_Game extends Game {
 
 	boolean hasPower = false;
 	int timeLeft = 150;
-	
+
 	int enemySpeed = 5;
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
@@ -51,6 +51,7 @@ public class Tronh_Game extends Game {
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	boolean isForceField;
 	String prevType;
+	int currRand = 1;
 
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
@@ -61,7 +62,6 @@ public class Tronh_Game extends Game {
 	Level level = new Level();
 
 	long startTime = 0;
-
 
 	public Tronh_Game() {
 		try {
@@ -79,7 +79,7 @@ public class Tronh_Game extends Game {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(
 					Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
-			System.out.println(ge.getAvailableFontFamilyNames());
+			//System.out.println(ge.getAvailableFontFamilyNames());
 		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
 		}
@@ -115,13 +115,13 @@ public class Tronh_Game extends Game {
 			sc.drawScore(g, 20, 30, "Your score: ");
 
 			enemyScore.drawScore(g, 830, 30, "Enemy score: ");
-			
+
 			// Show which level it is
 			level.drawLevel(g, 450, 30);
-			
+
 			// check score and run new level
 			level.levelInitiate(sc.getNumCoins(), sc);
-			
+
 			// check if gun is fired
 			gun.checkTrigger(p1);
 
@@ -136,23 +136,21 @@ public class Tronh_Game extends Game {
 				enemySpeed = 5;
 				isForceField = false;
 
-				//long endTime = System.nanoTime();
-				//System.out.println("PowerUp time: " + (endTime-startTime));
+				// long endTime = System.nanoTime();
+				// System.out.println("PowerUp time: " + (endTime-startTime));
 
 			}
-			
-			if(timeLeft==0)
-			{
-				hasPower=false;
-				timeLeft=150;
+
+			if (timeLeft == 0) {
+				hasPower = false;
+				timeLeft = 150;
 			}
-			
+
 			timecounter++;
-			
-			if(hasPower)
-			{
+
+			if (hasPower) {
 				timeLeft--;
-				powerUp.drawTimer(g,100,100,timeLeft);
+				powerUp.drawTimer(g, 100, 100, timeLeft);
 			}
 
 			if (isForceField == true && prevType != null) {
@@ -210,11 +208,10 @@ public class Tronh_Game extends Game {
 
 		// Speed up/ slow down based on collision
 		if (collision(playerRect, powerUpRectangle)) {
-            hasPower=true;
+			hasPower = true;
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 
 				if (powerUp.getType().equals("Speed Up") && isForceField == false) {
-
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
 					isForceField = false;
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
@@ -224,7 +221,7 @@ public class Tronh_Game extends Game {
 					isForceField = false;
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
-				if (powerUp.getType() == "Force Field") {
+				if (powerUp.getType().equals("Force Field")) {
 					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
 							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
 					isForceField = true;
@@ -232,15 +229,17 @@ public class Tronh_Game extends Game {
 
 				powerUp.currDrawn = true;
 				prevType = powerUp.getType();
+
 				powerUp.setType();
+				powerUp.setPrevType(prevType);
 				powerUp = new PowerUp(WIDTH, HEIGHT);
 				timecounter = 0;
 				powerCount = 0;
 				playSound(powerupSound, false);
 			}
 
-            if(!hasPower)
-            	powerUp.drawTimer(g,100,100,timeLeft);
+			if (!hasPower)
+				powerUp.drawTimer(g, 100, 100, timeLeft);
 		}
 
 		// Check collision between player and enemy
@@ -248,21 +247,28 @@ public class Tronh_Game extends Game {
 
 			if (isForceField == true) {
 				enemy.resetEnemy();
+				prevType = powerUp.getType();
 				powerUp.setType();
+				powerUp.setPrevType(prevType);
 				isForceField = false;
 			} else {
 				player.playerReset();
 				enemy.resetEnemy();
 				sc.resetCoin();
 				enemyScore.resetCoin();
+				prevType = powerUp.getType();
+				powerUp.setType();
+				powerUp.setPrevType(prevType);
+				isForceField = false;
 				playerSpeed = 10;
 				enemySpeed = 5;
 				timecounter = 0;
 				powerCount = 0;
-				playSound(collideSound,false);
-				hasPower=false;
-				timeLeft=150;
+				playSound(collideSound, false);
+				hasPower = false;
+				timeLeft = 150;
 			}
+
 		}
 
 		// Else no collisions
@@ -270,10 +276,10 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
-			} else if (powerUp.getType() == "Force Field" && powerUp.currDrawn == true) {
+			} else if (powerUp.getType().equals("Force Field") && powerUp.currDrawn == true && isForceField == true) {
 				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
 						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
-				System.out.println(powerUp.getType());
+				// System.out.println(powerUp.getType());
 			}
 		}
 
@@ -283,18 +289,23 @@ public class Tronh_Game extends Game {
 			sc.resetCoin();
 			enemyScore.resetCoin();
 			enemy.resetEnemy();
+			prevType = powerUp.getType();
+			powerUp.setType();
+			powerUp.setPrevType(prevType);
+			isForceField = false;
 			playerSpeed = 10;
 			enemySpeed = 5;
 			timecounter = 0;
 			powerCount = 0;
-			playSound(collideSound,false);
-			hasPower=false;
-			timeLeft=150;
+			playSound(collideSound, false);
+			hasPower = false;
+			timeLeft = 150;
 		}
 	}
 
 	@Override
-	public void reset() {}
+	public void reset() {
+	}
 
 	@Override
 	public Image banner() {
