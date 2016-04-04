@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Score {
@@ -17,6 +16,11 @@ public class Score {
 
 	public int getNumCoins() {
 		return currentCoins;
+	}
+	
+	public int getHighScore()
+	{
+		return highScore;
 	}
 
 	public void setCoins(int n) {

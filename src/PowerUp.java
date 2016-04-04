@@ -11,7 +11,7 @@ public class PowerUp {
 	private String type;
 	boolean currDrawn;
 	int currRand;
-	private String prevType;
+	String prevType;
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -50,13 +50,17 @@ public class PowerUp {
 
 	// SlowDown properties
 	public int SlowDown(int velocity) {
-		velocity = 2;
+ 		velocity = 2;
 		if (velocity <= 0)
 			velocity = 1;
 		return velocity;
 	}
 
 	public void ForceField(Graphics2D g, int x, int y) {
+		g.drawOval(x, y, 70, 70);
+	}
+
+	public void coinField (Graphics2D g, int x, int y) {
 		g.drawOval(x, y, 70, 70);
 	}
 
@@ -86,6 +90,10 @@ public class PowerUp {
 		if (getType().equals("Force Field")) {
 			g.drawImage(forceField, x, y, null);
 		}
+		if (getType().equals("Coin Field")) {
+			g.setColor(Color.YELLOW);
+			g.drawOval(x, y, 70, 70);
+		}
 	}
 
 	public void drawForceField(Graphics2D g, int x, int y, String s) {
@@ -110,8 +118,6 @@ public class PowerUp {
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
 		
-		setPrevType(type);
-		
 		int rand = (int) Tronh_Game.randFloat(1, 3);
 
 		if (rand == 1) {
@@ -123,13 +129,17 @@ public class PowerUp {
 		if (rand == 3) {
 			type = "Force Field";
 		}
+		if (rand == 4) {
+			type = "Coin Field";
+		}
 		currRand = rand;
-
+ 
 	}
 
-	public void drawTimer(Graphics2D g, int x, int y, int timeLeft) {
+	public void drawTimer(Graphics2D g, int x, int y, int timeLeft, String type) {
 		g.setColor(Color.WHITE);
-		String s = "" + (timeLeft / 30 + 1);
+
+		String s = type + " : " + (timeLeft/30 + 1);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
 	}
