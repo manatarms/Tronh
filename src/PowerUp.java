@@ -58,6 +58,10 @@ public class PowerUp {
 		g.drawOval(x, y, 70, 70);
 	}
 
+	public void coinField (Graphics2D g, int x, int y) {
+		g.drawOval(x, y, 70, 70);
+	}
+
 	// Renders PowerUp images
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
@@ -84,6 +88,10 @@ public class PowerUp {
 			g.setColor(Color.green);
 			g.drawOval(x, y, 70, 70);
 		}
+		if (getType().equals("Coin Field")) {
+			g.setColor(Color.YELLOW);
+			g.drawOval(x, y, 70, 70);
+		}
 	}
 	
 	public void drawForceField(Graphics2D g, int x, int y, String s) {
@@ -105,7 +113,7 @@ public class PowerUp {
 		if (currRand == 3 && rand == 3){
 		 rand = (int)Tronh_Game.randFloat(1, 2);
 		}
-		
+		rand = 4;
 		//int rand = 3;
 		if (rand == 1) {
 			type = "Speed Up";
@@ -115,6 +123,9 @@ public class PowerUp {
 		}
 		if (rand == 3) {
 			type = "Force Field";
+		}
+		if (rand == 4) {
+			type = "Coin Field";
 		}
 		currRand = rand;
 

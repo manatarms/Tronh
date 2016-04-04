@@ -51,6 +51,7 @@ public class Tronh_Game extends Game {
 
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	boolean isForceField;
+	boolean isCoinField;
 	String prevType;
 
 	Coin coin = new Coin(WIDTH, HEIGHT);
@@ -152,10 +153,11 @@ public class Tronh_Game extends Game {
 				powerUp.drawTimer(g,100,100,timeLeft);
 			}
 
-			if (isForceField == true && prevType != null) {
+			if (isCoinField == true && prevType != null) {
 				powerUp.drawForceField(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
 						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10), prevType);
 			}
+		
 		}
 
 		// fires gun if triggered
@@ -173,15 +175,15 @@ public class Tronh_Game extends Game {
 		}
 
 		// Check collisions initialization
-		playerRect = new Rectangle(player.getX(), player.getY(), player.getPlayerWidth(player.getDirection()),
-				player.getPlayerHeight(player.getDirection()));
+		playerRect = new Rectangle(player.getX()-50, player.getY()-50, player.getPlayerWidth(player.getDirection())+100,
+				player.getPlayerHeight(player.getDirection())+100);
 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
 				enemy.getEnemyHeight(enemy.getDirection()));
 
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
 
-		// g.draw(playerRect);
+		 g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
 		// g.draw(powerUpRectangle);
@@ -226,7 +228,13 @@ public class Tronh_Game extends Game {
 							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
 					isForceField = true;
 				}
-				
+				if (powerUp.getType().equals("Coin Field")) {
+					playerRect = new Rectangle(player.getX()-50, player.getY()-50, player.getPlayerWidth(player.getDirection())+100,
+							player.getPlayerHeight(player.getDirection())+100);
+					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
+							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
+					//isForceField = true;
+				}
 				startTime = System.nanoTime();
 
 				powerUp.currDrawn = true;
