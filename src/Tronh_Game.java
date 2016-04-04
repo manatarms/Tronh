@@ -53,6 +53,9 @@ public class Tronh_Game extends Game {
 	boolean isForceField;
 	boolean isCoinField;
 	String prevType;
+	int coinFieldExtension = 0;
+	int coinFieldAdjustment = 0;
+	boolean drawCoinField = false;
 
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
@@ -62,7 +65,8 @@ public class Tronh_Game extends Game {
 	Shoot gun = new Shoot();
 	Level level = new Level();
 	long startTime = 0;
-
+	
+	
 	public Tronh_Game() {
 		try {
 			banner = ImageIO.read(Tronh_Game.class.getResource("images/tronh_banner.png"));
@@ -79,7 +83,7 @@ public class Tronh_Game extends Game {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(
 					Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
-			System.out.println(ge.getAvailableFontFamilyNames());
+			//System.out.println(ge.getAvailableFontFamilyNames());
 		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
 		}
@@ -87,7 +91,7 @@ public class Tronh_Game extends Game {
 
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
-		System.out.println(powerUp.currRand);
+		//System.out.println(powerUp.currRand);
 		// Play game sound
 		if (!maintrackPlayed) {
 			playSound(mainSound, true);
@@ -129,13 +133,16 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-			enemy.moveEnemy(coinX, coinY, enemySpeed);
+			//enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (timecounter == 100) {
 				timecounter = 0;
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
+				coinFieldAdjustment = 0;
+				coinFieldExtension = 0;
+				drawCoinField = false;
 				//long endTime = System.nanoTime();
 				//System.out.println("PowerUp time: " + (endTime-startTime));
 			}
@@ -154,10 +161,7 @@ public class Tronh_Game extends Game {
 				powerUp.drawTimer(g,100,100,timeLeft);
 			}
 
-			if (isCoinField == true && prevType != null) {
-				powerUp.drawForceField(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
-						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10), prevType);
-			}
+			
 		
 		}
 
@@ -176,19 +180,23 @@ public class Tronh_Game extends Game {
 		}
 
 		// Check collisions initialization
-		playerRect = new Rectangle(player.getX()-50, player.getY()-50, player.getPlayerWidth(player.getDirection())+100,
-				player.getPlayerHeight(player.getDirection())+100);
+		//Check if the player has a Coin Field
+		if (drawCoinField) {
+			g.draw(playerRect);
+		}
+		playerRect = new Rectangle(player.getX()-coinFieldAdjustment, player.getY()-coinFieldAdjustment, player.getPlayerWidth(player.getDirection())+coinFieldExtension,
+				player.getPlayerHeight(player.getDirection())+coinFieldExtension);
 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
 				enemy.getEnemyHeight(enemy.getDirection()));
 
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
 
-		 g.draw(playerRect);
+		// g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
 		// g.draw(powerUpRectangle);
-
+		
 		// Check collisions between player and enemy
 
 		if (collision(playerRect, coinRectangle)) {
@@ -230,11 +238,9 @@ public class Tronh_Game extends Game {
 					isForceField = true;
 				}
 				if (powerUp.getType().equals("Coin Field")) {
-					playerRect = new Rectangle(player.getX()-50, player.getY()-50, player.getPlayerWidth(player.getDirection())+100,
-							player.getPlayerHeight(player.getDirection())+100);
-					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
-							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
-					//isForceField = true;
+					coinFieldExtension = 100;
+					coinFieldAdjustment = 50;
+					drawCoinField = true;
 				}
 				startTime = System.nanoTime();
 
@@ -281,7 +287,7 @@ public class Tronh_Game extends Game {
 			} else if (powerUp.getType() == "Force Field" && powerUp.currDrawn == true) {
 				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
 						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
-				System.out.println(powerUp.getType());
+			//	System.out.println(powerUp.getType());
 			}
 		}
 

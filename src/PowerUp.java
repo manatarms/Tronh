@@ -113,7 +113,6 @@ public class PowerUp {
 		if (currRand == 3 && rand == 3){
 		 rand = (int)Tronh_Game.randFloat(1, 2);
 		}
-		rand = 4;
 		//int rand = 3;
 		if (rand == 1) {
 			type = "Speed Up";
