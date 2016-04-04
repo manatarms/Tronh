@@ -6,8 +6,7 @@ public class Score {
 
 	private int currentCoins;
 	int highScore;
-	
-	
+
 	// Initializes score board
 	public Score() {
 		highScore = 0;
@@ -17,9 +16,8 @@ public class Score {
 	public int getNumCoins() {
 		return currentCoins;
 	}
-	
-	public int getHighScore()
-	{
+
+	public int getHighScore() {
 		return highScore;
 	}
 
@@ -61,12 +59,12 @@ public class Score {
 		 * color changes based off score if((currentCoins/2)*2 == currentCoins)
 		 * g.setColor(Color.BLUE); else g.setColor(Color.GREEN);
 		 */
-		g.setColor( new Color (157,241, 55));
-		//g.setColor(Color.GREEN);
+		g.setColor(new Color(157, 241, 55));
+		// g.setColor(Color.GREEN);
 		String s = text + currentCoins;
 		String hs = "High Score: " + highScore;
-	    //	Font f = new Font("Futura", Font.PLAIN, 15);
-		//g.setFont(f);
+		// Font f = new Font("Futura", Font.PLAIN, 15);
+		// g.setFont(f);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
 		g.drawString(hs, x, y + 20);

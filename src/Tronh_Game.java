@@ -85,7 +85,6 @@ public class Tronh_Game extends Game {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(
 					Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
-			// System.out.println(ge.getAvailableFontFamilyNames());
 		} catch (IOException | FontFormatException e) {
 			e.printStackTrace();
 		}
@@ -112,7 +111,7 @@ public class Tronh_Game extends Game {
 		// Rendering graphics
 		g.drawImage(background, 0, 0, null);
 		player.drawPlayer(g);
-		
+
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
 
 		// Checking if the player is active.
@@ -139,9 +138,8 @@ public class Tronh_Game extends Game {
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (isForceField == true) {
-				powerUp.drawForceField(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
-						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10), prevType);
-				System.out.println("Drew this");
+			powerUp.drawForceField(g, player.getX() - player.getPlayerHeight(player.direction) / 2 + 5,
+					player.getY() - player.getPlayerWidth(player.direction) / 2 + 5, "Force Field");
 			}
 
 			if (timecounter == 100) {
@@ -237,8 +235,8 @@ public class Tronh_Game extends Game {
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
 				if (powerUp.getType().equals("Force Field")) {
-					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
-							player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
+					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 + 5),
+							player.getY() - (player.getPlayerWidth(player.direction) / 2 + 5));
 					isForceField = true;
 				}
 
@@ -302,8 +300,8 @@ public class Tronh_Game extends Game {
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 			} else if (powerUp.getType().equals("Force Field") && powerUp.currDrawn == true && isForceField == true) {
-				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 - 10),
-						player.getY() - (player.getPlayerWidth(player.direction) / 2 - 10));
+				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 + 5),
+						player.getY() - (player.getPlayerWidth(player.direction) / 2 + 5));
 
 			}
 		}

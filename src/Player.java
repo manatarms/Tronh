@@ -109,8 +109,8 @@ public class Player {
 		} else if (pl1.pressed(Button.D)) {
 			direction = "DOWN";
 			canRun = true;
-		} else if(pl1.pressed(Button.A)){
-			
+		} else if (pl1.pressed(Button.A)) {
+
 		}
 	}
 
