@@ -49,7 +49,7 @@ public class PowerUp {
 
 	// SlowDown properties
 	public int SlowDown(int velocity) {
-		velocity = 2;
+ 		velocity = 2;
 		if (velocity <= 0)
 			velocity = 1;
 		return velocity;
@@ -128,13 +128,13 @@ public class PowerUp {
 			type = "Coin Field";
 		}
 		currRand = rand;
-
+ 
 	}
 
 	public void drawTimer(Graphics2D g, int x, int y, int timeLeft)
 	{
 		g.setColor(Color.WHITE);
-		String s = getType() + (timeLeft/30 + 1);
+		String s = getType() + " : " + (timeLeft/30 + 1);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);
 	}
