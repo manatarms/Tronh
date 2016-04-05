@@ -135,7 +135,7 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-			enemy.moveEnemy(coinX, coinY, enemySpeed);
+			//enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (isForceField == true) {
 			powerUp.drawForceField(g, player.getX() - player.getPlayerHeight(player.direction) / 2 + 5,
@@ -235,8 +235,7 @@ public class Tronh_Game extends Game {
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
 				if (powerUp.getType().equals("Force Field")) {
-					powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 + 5),
-							player.getY() - (player.getPlayerWidth(player.direction) / 2 + 5));
+					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 					isForceField = true;
 				}
 
@@ -299,11 +298,7 @@ public class Tronh_Game extends Game {
 			coin.drawCoin(g, coin.getX(), coin.getY());
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
 				powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
-			} else if (powerUp.getType().equals("Force Field") && powerUp.currDrawn == true && isForceField == true) {
-				powerUp.drawPowerUp(g, player.getX() - (player.getPlayerHeight(player.direction) / 2 + 5),
-						player.getY() - (player.getPlayerWidth(player.direction) / 2 + 5));
-
-			}
+			} 
 		}
 
 		// Reset Player out of bounds
