@@ -57,7 +57,6 @@ public class Tronh_Game extends Game {
 
 	int coinFieldExtension = 0;
 	int coinFieldAdjustment = 0;
-	boolean drawCoinField = false;
 
 	Coin coin = new Coin(WIDTH, HEIGHT);
 	Score sc = new Score();
@@ -92,10 +91,10 @@ public class Tronh_Game extends Game {
 
 	@Override
 	public void tick(Graphics2D g, Input p1, Input p2, Sound s) {
-		// System.out.println(powerUp.currRand);
+		
 		// Play game sound
 		if (!maintrackPlayed) {
-//			playSound(mainSound, true);
+			playSound(mainSound, true);
 			maintrackPlayed = true;
 		}
 		// Setting the graphics objects
@@ -135,11 +134,14 @@ public class Tronh_Game extends Game {
 			// move player and enemy
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
-			//enemy.moveEnemy(coinX, coinY, enemySpeed);
+			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			if (isForceField == true) {
 			powerUp.drawForceField(g, player.getX() - player.getPlayerHeight(player.direction) / 2 + 5,
 					player.getY() - player.getPlayerWidth(player.direction) / 2 + 5, "Force Field");
+			} else if (isCoinField == true){
+				powerUp.drawForceField(g, player.getX() - player.getPlayerHeight(player.direction) ,
+						player.getY() - player.getPlayerWidth(player.direction)  , "Coin Field");
 			}
 
 			if (timecounter == 100) {
@@ -147,9 +149,9 @@ public class Tronh_Game extends Game {
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
+				isCoinField = false;
 				coinFieldAdjustment = 0;
 				coinFieldExtension = 0;
-				drawCoinField = false;
 				// long endTime = System.nanoTime();
 				// System.out.println("PowerUp time: " + (endTime-startTime));
 
@@ -185,9 +187,7 @@ public class Tronh_Game extends Game {
 
 		// Check collisions initialization
 		// Check if the player has a Coin Field
-		if (drawCoinField) {
-			g.draw(playerRect);
-		}
+		
 		playerRect = new Rectangle(player.getX() - coinFieldAdjustment, player.getY() - coinFieldAdjustment,
 				player.getPlayerWidth(player.getDirection()) + coinFieldExtension,
 				player.getPlayerHeight(player.getDirection()) + coinFieldExtension);
@@ -196,7 +196,7 @@ public class Tronh_Game extends Game {
 
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
-
+		//for debugging
 		// g.draw(playerRect);
 		// g.draw(enemyRectangle);
 		// g.draw(coinRectangle);
@@ -242,7 +242,8 @@ public class Tronh_Game extends Game {
 				if (powerUp.getType().equals("Coin Field")) {
 					coinFieldExtension = 100;
 					coinFieldAdjustment = 50;
-					drawCoinField = true;
+					isCoinField = true;
+					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 				}
 				startTime = System.nanoTime();
 
@@ -273,7 +274,9 @@ public class Tronh_Game extends Game {
 				powerUp.setPrevType(prevType);
 				isForceField = false;
 				hasPower = false;
-			} else {
+				playSound(collideSound, false);
+			}
+			else {
 				player.playerReset();
 				enemy.resetEnemy();
 				sc.resetCoin();

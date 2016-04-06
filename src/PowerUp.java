@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -12,6 +13,7 @@ public class PowerUp {
 	boolean currDrawn;
 	int currRand;
 	String prevType;
+
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -68,12 +70,14 @@ public class PowerUp {
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
 		currDrawn = true;
-		Image fastah = null, slowah = null, forceField = null;
+		Image fastah = null, slowah = null, forceFieldIcon = null,coinFieldIcon = null;
 
 		try {
 			fastah = ImageIO.read(Tronh_Game.class.getResource("images/fastah.png"));
 			slowah = ImageIO.read(Tronh_Game.class.getResource("images/slowah.png"));
-			forceField = ImageIO.read(Tronh_Game.class.getResource("images/ForceField.png"));
+		    forceFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/ForceFieldIcon.png"));
+		    coinFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/CoinFieldIcon.png"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,11 +92,10 @@ public class PowerUp {
 		}
 
 		if (getType().equals("Force Field")) {
-			g.drawImage(forceField, x, y, null);
+			g.drawImage(forceFieldIcon, x, y, null);
 		}
 		if (getType().equals("Coin Field")) {
-			g.setColor(Color.YELLOW);
-			g.drawOval(x, y, 70, 70);
+			g.drawImage(coinFieldIcon, x, y, null);
 		}
 	}
 
@@ -100,15 +103,19 @@ public class PowerUp {
 
 		currDrawn = true;
 		Image forceField = null;
+		Image coinField = null;
 
 		try {
 			forceField = ImageIO.read(Tronh_Game.class.getResource("images/ForceField.png"));
+			coinField = ImageIO.read(Tronh_Game.class.getResource("images/CoinField.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		if (s.equals("Force Field")) {
 			g.drawImage(forceField, x, y, null);
+		} else if (s.equals("Coin Field")){
+			g.drawImage(coinField, x, y, null);
 		} else {
 			return;
 		}
@@ -117,8 +124,8 @@ public class PowerUp {
 	// Randomly creates a SpeedUp or SlowDown
 	public void setType() {
 
-		int rand = (int) Tronh_Game.randFloat(1, 3);
-
+		int rand = (int) Tronh_Game.randFloat(1, 4);
+		rand = 3;
 		if (rand == 1) {
 			type = "Speed Up";
 		}
