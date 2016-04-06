@@ -190,7 +190,7 @@ public class Tronh_Game extends Game {
 		// Check collisions initialization
 		// Check if the player has a Coin Field
 
-		playerRect = new Rectangle(player.getX() - coinFieldAdjustment, player.getY(),
+		playerRect = new Rectangle(player.getX(), player.getY(),
 				player.getPlayerWidth(player.getDirection()), player.getPlayerHeight(player.getDirection()));
 		enemyRectangle = new Rectangle(enemy.getX(), enemy.getY(), enemy.getEnemyWidth(enemy.getDirection()),
 				enemy.getEnemyHeight(enemy.getDirection()));
