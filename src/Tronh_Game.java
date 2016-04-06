@@ -196,6 +196,7 @@ public class Tronh_Game extends Game {
 
 		coinRectangle = new Rectangle(coinX, coinY, 20, 20);
 		Rectangle powerUpRectangle = new Rectangle(powerUp.getX(), powerUp.getY(), 60, 60);
+		
 		//for debugging
 		// g.draw(playerRect);
 		// g.draw(enemyRectangle);

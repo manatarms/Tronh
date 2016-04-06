@@ -125,7 +125,6 @@ public class PowerUp {
 	public void setType() {
 
 		int rand = (int) Tronh_Game.randFloat(1, 4);
-		rand = 3;
 		if (rand == 1) {
 			type = "Speed Up";
 		}
