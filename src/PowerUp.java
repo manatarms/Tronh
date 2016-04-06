@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -13,7 +12,6 @@ public class PowerUp {
 	boolean currDrawn;
 	int currRand;
 	String prevType;
-
 
 	// PowerUP constructor
 	public PowerUp(int WIDTH, int HEIGHT) {
@@ -58,25 +56,17 @@ public class PowerUp {
 		return velocity;
 	}
 
-	public void ForceField(Graphics2D g, int x, int y) {
-		g.drawOval(x, y, 70, 70);
-	}
-
-	public void coinField(Graphics2D g, int x, int y) {
-		g.drawOval(x, y, 70, 70);
-	}
-
 	// Renders PowerUp images
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
 		currDrawn = true;
-		Image fastah = null, slowah = null, forceFieldIcon = null,coinFieldIcon = null;
+		Image fastah = null, slowah = null, forceFieldIcon = null, coinFieldIcon = null;
 
 		try {
 			fastah = ImageIO.read(Tronh_Game.class.getResource("images/fastah.png"));
 			slowah = ImageIO.read(Tronh_Game.class.getResource("images/slowah.png"));
-		    forceFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/ForceFieldIcon.png"));
-		    coinFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/CoinFieldIcon.png"));
+			forceFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/ForceFieldIcon.png"));
+			coinFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/CoinFieldIcon.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -99,7 +89,7 @@ public class PowerUp {
 		}
 	}
 
-	public void drawForceField(Graphics2D g, int x, int y, String s) {
+	public void drawField(Graphics2D g, int x, int y, String s) {
 
 		currDrawn = true;
 		Image forceField = null;
@@ -114,7 +104,7 @@ public class PowerUp {
 
 		if (s.equals("Force Field")) {
 			g.drawImage(forceField, x, y, null);
-		} else if (s.equals("Coin Field")){
+		} else if (s.equals("Coin Field")) {
 			g.drawImage(coinField, x, y, null);
 		} else {
 			return;
