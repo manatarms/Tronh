@@ -159,7 +159,7 @@ public class Tronh_Game extends Game {
 			}
 
 			// Resets power conditions when timer hits 100
-			if (timecounter == 100) {
+			if (timecounter == 150) {
 				timecounter = 0;
 				playerSpeed = 10;
 				enemySpeed = 5;

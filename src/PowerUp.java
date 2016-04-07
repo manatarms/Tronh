@@ -74,19 +74,30 @@ public class PowerUp {
 
 		// Draws images depending on what type is
 		if (getType().equals("Speed Up")) {
+			drawPupTitle(g, x-20, y, "Speed Up");
 			g.drawImage(fastah, x, y, null);
 		}
 
 		if (getType().equals("Slow Down")) {
+			drawPupTitle(g, x-28, y, "Slow Down");
 			g.drawImage(slowah, x, y, null);
 		}
 
 		if (getType().equals("Force Field")) {
+			drawPupTitle(g, x-39, y, "Force Field");
 			g.drawImage(forceFieldIcon, x, y, null);
 		}
 		if (getType().equals("Coin Field")) {
+			drawPupTitle(g, x-28, y, "Coin Field");
 			g.drawImage(coinFieldIcon, x, y, null);
 		}
+	}
+	
+	public void drawPupTitle(Graphics2D g, int x, int y, String s)
+	{
+		g.setColor(Color.WHITE);
+		g.setFont(Tronh_Game.customFont);
+		g.drawString(s, x, y);
 	}
 
 	public void drawField(Graphics2D g, int x, int y, String s) {
