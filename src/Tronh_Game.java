@@ -34,15 +34,14 @@ public class Tronh_Game extends Game {
 	int highScore;
 	int maxCount = 1;
 	int trigger = 100;
-	int timecounter = 0;
+	int timeLeft = 0;
 	int powerCount = 0;
-	int timeLeft = 150;
 	int enemySpeed = 5;
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
-	int currRand = 1;
 	int coinFieldExtension = 0;
 	int coinFieldAdjustment = 0;
+	String lockMode = "locked";
 	String prevType;
 	String enemyDirection = "UP";
 	String collectSound = "src/sounds/collect.wav";
@@ -134,8 +133,27 @@ public class Tronh_Game extends Game {
 			// Show which level it is
 			level.drawLevel(g, 450, 30);
 
+			if (prevType != null && timeLeft != 150 && (timeLeft % 5 == 0 || timeLeft % 4 == 0)) {
+				if (timeLeft > 100) {
+					g.drawString(prevType + " activated", 400, 300);
+				}
+				if (level.currentLevel == 5 && timeLeft < 90) {
+					g.drawString("Force Field Unlocked!", 400, 300);
+				}
+				if (level.currentLevel == 10 && timeLeft < 90) {
+					g.drawString("Coin Field Unlocked!", 400, 300);
+				}
+
+			}
+
+			// Send level Status
+			powerUp.lockStatus = lockMode;
+
 			// Check score and run new level
-			pickUpDelay = level.levelUp(playerScore.getHighScore(), pickUpDelay);
+			pickUpDelay = level.levelUp(playerScore.getHighScore(), pickUpDelay, powerUp);
+
+			// Save level status
+			lockMode = powerUp.lockStatus;
 
 			// Check if gun is fired
 			gun.checkTrigger(p1);
@@ -158,26 +176,18 @@ public class Tronh_Game extends Game {
 						player.getY() - player.getPlayerWidth(player.direction) / 2 - 30, "Coin Field");
 			}
 
-			// Resets power conditions when timer hits 100
-			if (timecounter == 150) {
-				timecounter = 0;
+			// Resets power conditions when timer hits 150
+			if (timeLeft == 0) {
+				timeLeft = 150;
 				playerSpeed = 10;
 				enemySpeed = 5;
 				isForceField = false;
 				isCoinField = false;
+				hasPower = false;
 				coinFieldAdjustment = 0;
 				coinFieldExtension = 0;
 
 			}
-
-			// Deactivates power and resets time if time runs out
-			if (timeLeft == 0) {
-				hasPower = false;
-				timeLeft = 150;
-			}
-
-			// Increments time
-			timecounter++;
 
 			// Checks if Power is active
 			if (hasPower) {
@@ -196,7 +206,7 @@ public class Tronh_Game extends Game {
 			// Checks if enemy was hit
 			if (gun.hitCheck(enemy)) {
 				enemySpeed = 0;
-				timecounter = 0;
+				timeLeft = 150;
 
 			}
 		}
@@ -253,6 +263,9 @@ public class Tronh_Game extends Game {
 		// Check collisions between player and PowerUp
 		if (collision(playerRect, powerUpRectangle)) {
 
+			// Save level status
+			lockMode = powerUp.lockStatus;
+
 			// Checks to see if Player has collected at least 5 coins to get
 			// PowerUp
 			if ((powerCount % 5 == 0 && powerCount != 0) || powerCount >= 5) {
@@ -289,8 +302,7 @@ public class Tronh_Game extends Game {
 				prevType = powerUp.getType();
 				powerUp.setType();
 				powerUp.setPrevType(prevType);
-				powerUp = new PowerUp(WIDTH, HEIGHT);
-				timecounter = 0;
+				timeLeft = 150;
 				powerCount = 0;
 				playSound(powerupSound, false);
 			}
@@ -317,19 +329,18 @@ public class Tronh_Game extends Game {
 				enemy.resetEnemy();
 				playerScore.resetCoin();
 				enemyScore.resetCoin();
-				prevType = powerUp.getType();
+				prevType = null;
 				powerUp.setType();
 				powerUp.setPrevType(prevType);
 				isForceField = false;
 				isCoinField = false;
 				playerSpeed = 10;
 				enemySpeed = 5;
-				timecounter = 0;
+				timeLeft = 150;
 				powerCount = 0;
 				level.levelReset();
 				playSound(collideSound, false);
 				hasPower = false;
-				timeLeft = 150;
 			}
 
 		}
@@ -348,19 +359,18 @@ public class Tronh_Game extends Game {
 			playerScore.resetCoin();
 			enemyScore.resetCoin();
 			enemy.resetEnemy();
-			prevType = powerUp.getType();
+			prevType = null;
 			powerUp.setType();
 			powerUp.setPrevType(prevType);
 			isForceField = false;
 			isCoinField = false;
 			playerSpeed = 10;
 			enemySpeed = 5;
-			timecounter = 0;
+			timeLeft = 150;
 			powerCount = 0;
 			level.levelReset();
 			playSound(collideSound, false);
 			hasPower = false;
-			timeLeft = 150;
 		}
 	}
 

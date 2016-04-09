@@ -10,23 +10,20 @@ public class Level {
 	}
 
 	// sets what happens in each level, and changes level
-	boolean levelUp(int score, boolean pickupdelay) {
+	boolean levelUp(int score, boolean pickupdelay, PowerUp p) {
 		if ((score % 5 == 0) && (pickupdelay)) {
 			currentLevel++;
-			// if(currentLevel == 0)
-			// {
-			//
-			// }
-			//
-			// if(currentLevel == 1)
-			// {
-			//
-			// }
-			//
-			// if(currentLevel == 1)
-			// {
-			//
-			// }
+			if (currentLevel >= 0 && currentLevel < 5) {
+				p.lockStatus = "locked";
+			}
+
+			if (currentLevel >= 5 && currentLevel < 10) {
+				p.lockStatus = "unlock_1";
+			}
+
+			if (currentLevel >= 10) {
+				p.lockStatus = "unlock_2";
+			}
 		}
 		if (score % 5 > 0) {
 			return true;
