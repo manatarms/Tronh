@@ -1,17 +1,20 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+//import java.util.logging.Level;
 
 public class Level {
 
 	int currentLevel;
+	boolean died;
 
 	Level() {
 		currentLevel = 0;
+		died = false;
 	}
 
 	// sets what happens in each level, and changes level
-	boolean levelUp(int score, boolean pickupdelay, PowerUp p) {
-		if ((score % 5 == 0) && (pickupdelay)) {
+	boolean levelUp(int score, boolean pickupdelay, PowerUp p, boolean death) {
+		if ((score % 5 == 0) && (pickupdelay) && !(death)) {
 			currentLevel++;
 			if (currentLevel >= 0 && currentLevel < 5) {
 				p.lockStatus = "locked";

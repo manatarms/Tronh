@@ -12,7 +12,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.UnsupportedAudioFileException; 
 
 import arcadia.Arcadia;
 import arcadia.Game;
@@ -132,6 +132,7 @@ public class Tronh_Game extends Game {
 
 			// Show which level it is
 			level.drawLevel(g, 450, 30);
+			//level.died = false;
 
 			if (prevType != null && timeLeft != 150 && (timeLeft % 5 == 0 || timeLeft % 4 == 0)) {
 				if (timeLeft > 100) {
@@ -150,7 +151,7 @@ public class Tronh_Game extends Game {
 			powerUp.lockStatus = lockMode;
 
 			// Check score and run new level
-			pickUpDelay = level.levelUp(playerScore.getHighScore(), pickUpDelay, powerUp);
+			pickUpDelay = level.levelUp(playerScore.getNumCoins(), pickUpDelay, powerUp, level.died);
 
 			// Save level status
 			lockMode = powerUp.lockStatus;
@@ -162,7 +163,7 @@ public class Tronh_Game extends Game {
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
 			// Moves enemy player
-			enemy.moveEnemy(coinX, coinY, enemySpeed);
+			//enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			// Renders coinField when it is active (visually)
 			if (isForceField == true) {
@@ -239,6 +240,7 @@ public class Tronh_Game extends Game {
 			playerScore.saveScore();
 			powerCount += 1;
 			playSound(collectSound, false);
+			level.died = false;
 		}
 
 		// Checks collisions between coin and PowerUp coinField
@@ -338,7 +340,7 @@ public class Tronh_Game extends Game {
 				enemySpeed = 5;
 				timeLeft = 150;
 				powerCount = 0;
-				level.levelReset();
+				level.died = true;
 				playSound(collideSound, false);
 				hasPower = false;
 			}
@@ -368,7 +370,7 @@ public class Tronh_Game extends Game {
 			enemySpeed = 5;
 			timeLeft = 150;
 			powerCount = 0;
-			level.levelReset();
+			level.died = true;
 			playSound(collideSound, false);
 			hasPower = false;
 		}
