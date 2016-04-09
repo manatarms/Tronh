@@ -163,7 +163,7 @@ public class Tronh_Game extends Game {
 			player.Move(player.getX(), player.getY(), playerSpeed);
 
 			// Moves enemy player
-			//enemy.moveEnemy(coinX, coinY, enemySpeed);
+			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
 			// Renders coinField when it is active (visually)
 			if (isForceField == true) {
