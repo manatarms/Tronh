@@ -40,6 +40,11 @@ public class Score {
 	public void resetCoin() {
 		currentCoins = 0;
 	}
+	
+	public void resetHighScore() {
+		currentCoins = 0;
+		highScore = 0;
+	}
 
 	public void drawScore(Graphics2D g, int x, int y, String text) {
 		/*

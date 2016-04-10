@@ -1,5 +1,6 @@
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -12,13 +13,15 @@ public class Player {
 	int currentx;
 	int currenty;
 	boolean canRun;
-
+	int lives;
+	
 	Image player_U, player_D, player_R, player_L;
 
 	Player() {
 		currentx = 20;
 		currenty = 20;
 		direction = "DOWN";
+		lives = 5;
 		canRun = false;
 
 		player_U = null;
@@ -153,5 +156,22 @@ public class Player {
 		} else if (direction == "RIGHT") {
 			gh.drawImage(player_R, getX(), getY(), null);
 		}
+	}
+	
+	public void drawPlayerLives(Graphics2D gh) {
+
+		Image player_life = null;
+		try {
+		
+			player_life = ImageIO.read(Tronh_Game.class.getResource("images/heart.png"));
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	      for(int i = lives;i>=1;i--){
+			gh.drawImage(player_life,(i*20), 60, null);
+	      }
 	}
 }

@@ -161,10 +161,12 @@ public class Tronh_Game extends Game {
 
 			// Moves player
 			player.Move(player.getX(), player.getY(), playerSpeed);
-
+			
 			// Moves enemy player
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
+			
+			
 			// Renders coinField when it is active (visually)
 			if (isForceField == true) {
 				powerUp.drawField(g, player.getX() - player.getPlayerHeight(player.direction) / 2 + 5,
@@ -195,6 +197,9 @@ public class Tronh_Game extends Game {
 				timeLeft--;
 				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
 			}
+			
+			//Draw player lives
+			player.drawPlayerLives(g);
 
 		}
 
@@ -211,6 +216,7 @@ public class Tronh_Game extends Game {
 
 			}
 		}
+		
 
 		// ------------- Collision methods -------------------
 
@@ -343,6 +349,12 @@ public class Tronh_Game extends Game {
 				level.died = true;
 				playSound(collideSound, false);
 				hasPower = false;
+				if(player.lives == 1){
+					playerScore.resetHighScore();
+					enemyScore.resetHighScore();
+				}
+				player.lives = (player.lives == 1) ? 5 : player.lives-1;
+				
 			}
 
 		}
@@ -373,6 +385,12 @@ public class Tronh_Game extends Game {
 			level.died = true;
 			playSound(collideSound, false);
 			hasPower = false;
+			if(player.lives == 1){
+				playerScore.resetHighScore();
+				enemyScore.resetHighScore();
+			}
+			player.lives = (player.lives == 1) ? 5 : player.lives-1;
+		
 		}
 	}
 
