@@ -47,7 +47,10 @@ public class Tronh_Game extends Game {
 	String collectSound = "src/sounds/collect.wav";
 	String collideSound = "src/sounds/collide.wav";
 	String powerupSound = "src/sounds/powerup.wav";
-	String enemycoinSound = "src/sounds/enemycoin.wav";
+	String enemycoinSound = "src/sounds/enemycollect.wav";
+	String shieldSound = "src/sounds/shield.wav";
+	String levelSound = "src/sounds/level.wav";
+	String gunSound = "src/sounds/gun.wav";
 	static String mainSound = "src/sounds/main.wav";
 	static Font customFont;
 
@@ -140,9 +143,11 @@ public class Tronh_Game extends Game {
 				}
 				if (level.currentLevel == 5 && timeLeft < 90) {
 					g.drawString("Force Field Unlocked!", 400, 300);
+					playSound(levelSound, false);
 				}
 				if (level.currentLevel == 10 && timeLeft < 90) {
 					g.drawString("Coin Field Unlocked!", 400, 300);
+					playSound(levelSound, false);
 				}
 
 			}
@@ -208,12 +213,12 @@ public class Tronh_Game extends Game {
 			gun.starter(player.getX(), player.getY(), player.getDirection());
 			gun.fire(bulletSpeed);
 			gun.drawBullet(g);
-
+			playSound(gunSound, false);
 			// Checks if enemy was hit
 			if (gun.hitCheck(enemy)) {
 				enemySpeed = 0;
 				timeLeft = 150;
-
+				playSound(collideSound, false);
 			}
 		}
 		
@@ -282,18 +287,21 @@ public class Tronh_Game extends Game {
 				if (powerUp.getType().equals("Speed Up") && !isForceField && !isCoinField) {
 					playerSpeed = powerUp.SpeedUp(playerSpeed);
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+					playSound(powerupSound, false);
 				}
 
 				// Slow Down conditions
 				if (powerUp.getType().equals("Slow Down") && !isForceField && !isCoinField) {
 					enemySpeed = powerUp.SlowDown(enemySpeed);
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+					playSound(powerupSound, false);
 				}
 
 				// ForceField conditions
 				if (powerUp.getType().equals("Force Field")) {
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 					isForceField = true;
+					playSound(shieldSound, false);
 				}
 
 				// CoinField conditions
@@ -302,6 +310,7 @@ public class Tronh_Game extends Game {
 					coinFieldAdjustment = 50;
 					isCoinField = true;
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+					playSound(shieldSound, false);
 				}
 
 				// Properties for rendering PowerUps
@@ -312,7 +321,7 @@ public class Tronh_Game extends Game {
 				powerUp.setPrevType(prevType);
 				timeLeft = 150;
 				powerCount = 0;
-				playSound(powerupSound, false);
+				
 			}
 
 			// Draws timer for PowerUp limits
