@@ -51,6 +51,7 @@ public class Tronh_Game extends Game {
 	String shieldSound = "src/sounds/shield.wav";
 	String levelSound = "src/sounds/level.wav";
 	String gunSound = "src/sounds/gun.wav";
+	String freezeSound = "src/sounds/freeze.wav";
 	static String mainSound = "src/sounds/main.wav";
 	static Font customFont;
 
@@ -218,7 +219,7 @@ public class Tronh_Game extends Game {
 			if (gun.hitCheck(enemy)) {
 				enemySpeed = 0;
 				timeLeft = 150;
-				playSound(collideSound, false);
+				playSound(freezeSound, false);
 			}
 		}
 		
