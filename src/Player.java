@@ -98,14 +98,14 @@ public class Player {
 		}
 	}
 
-	public void checkPressed(Input pl1) {
+	public void checkPressed(Input pl1,boolean stopped) {
 		if (pl1.pressed(Button.R)) {
 			direction = "RIGHT";
 			canRun = true;
-		} else if (pl1.pressed(Button.L)) {
+		} else if (pl1.pressed(Button.L)&&!stopped) {
 			direction = "LEFT";
 			canRun = true;
-		} else if (pl1.pressed(Button.U)) {
+		} else if (pl1.pressed(Button.U)&&!stopped) {
 			direction = "UP";
 			canRun = true;
 		} else if (pl1.pressed(Button.D)) {

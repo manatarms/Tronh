@@ -28,6 +28,7 @@ public class Tronh_Game extends Game {
 	boolean hasPower = false;
 	boolean isCoinField;
 	boolean maintrackPlayed = false;
+	boolean stopped = true;
 	boolean isForceField;
 	Image banner, background;
 	int coinTotal;
@@ -124,10 +125,13 @@ public class Tronh_Game extends Game {
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
 
 		// Checking if the player is active.
-		player.checkPressed(p1);
-
+		player.checkPressed(p1, stopped);
+		
 		// Code that runs while the Player can move
 		if (player.canRun) {
+			//Activate all actions
+			stopped = false;
+			
 			// Generate score
 			playerScore.drawScore(g, 20, 30, "Your score: ");
 
@@ -253,6 +257,7 @@ public class Tronh_Game extends Game {
 			powerCount += 1;
 			playSound(collectSound, false);
 			level.died = false;
+			stopped = true;
 		}
 
 		// Checks collisions between coin and PowerUp coinField
@@ -357,11 +362,13 @@ public class Tronh_Game extends Game {
 				timeLeft = 150;
 				powerCount = 0;
 				level.died = true;
+				stopped = true;
 				playSound(collideSound, false);
 				hasPower = false;
 				if(player.lives == 1){
 					playerScore.resetHighScore();
 					enemyScore.resetHighScore();
+					level.levelReset();
 				}
 				player.lives = (player.lives == 1) ? 5 : player.lives-1;
 				
@@ -393,11 +400,13 @@ public class Tronh_Game extends Game {
 			timeLeft = 150;
 			powerCount = 0;
 			level.died = true;
+			stopped = true;
 			playSound(collideSound, false);
 			hasPower = false;
 			if(player.lives == 1){
 				playerScore.resetHighScore();
 				enemyScore.resetHighScore();
+				level.levelReset();
 			}
 			player.lives = (player.lives == 1) ? 5 : player.lives-1;
 		
