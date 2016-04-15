@@ -7,7 +7,7 @@ W/A/S/D keys to move Up/Left/Down/Right, respectively
 
 Installation Instructions:
 Runs efficiently on Java Eclipse through Arcadia. If all these conditions are met, 
-import the file and runthe game from the "Trohn_Game" window. 
+import the file and run the game from the "Trohn_Game" window. 
 
 Team Members:
 Sachin Fernandes - Team Leader, Programmer
