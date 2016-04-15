@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -12,7 +13,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException; 
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Timer;
 
 import arcadia.Arcadia;
 import arcadia.Game;
@@ -29,6 +31,7 @@ public class Tronh_Game extends Game {
 	boolean isCoinField;
 	boolean maintrackPlayed = false;
 	boolean stopped = true;
+	boolean gameOver = false;
 	boolean isForceField;
 	Image banner, background;
 	int coinTotal;
@@ -55,7 +58,8 @@ public class Tronh_Game extends Game {
 	String freezeSound = "src/sounds/freeze.wav";
 	static String mainSound = "src/sounds/main.wav";
 	static Font customFont;
-
+	static Font largeCustomFont;
+	
 	// Calling for outside classes
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	Coin coin = new Coin(WIDTH, HEIGHT);
@@ -65,6 +69,7 @@ public class Tronh_Game extends Game {
 	Player player = new Player();
 	Shoot gun = new Shoot();
 	Level level = new Level();
+	
 
 	/**
 	 * Tronh - The Game
@@ -84,6 +89,8 @@ public class Tronh_Game extends Game {
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf"))
 					.deriveFont(12f);
+			largeCustomFont =Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf"))
+					.deriveFont(48f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(
 					Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf")));
@@ -103,6 +110,9 @@ public class Tronh_Game extends Game {
 			playSound(mainSound, true);
 			maintrackPlayed = true;
 		}
+		
+		
+		
 		// Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -123,14 +133,25 @@ public class Tronh_Game extends Game {
 
 		// Rendering enemy
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
-
+		
+		// Rendering Game Over 
+		if(gameOver){
+		g.setColor(new Color(255, 0, 0));
+		g.setFont(largeCustomFont);
+		g.drawString("GAME OVER", 285, 300);
+		}
+		
 		// Checking if the player is active.
 		player.checkPressed(p1, stopped);
 		
 		// Code that runs while the Player can move
 		if (player.canRun) {
-			//Activate all actions
+			
+			// Activate all actions
 			stopped = false;
+			
+			// Remove Game Over
+			gameOver = false;
 			
 			// Generate score
 			playerScore.drawScore(g, 20, 30, "Your score: ");
@@ -369,6 +390,8 @@ public class Tronh_Game extends Game {
 					playerScore.resetHighScore();
 					enemyScore.resetHighScore();
 					level.levelReset();
+					gameOver = true;
+			
 				}
 				player.lives = (player.lives == 1) ? 5 : player.lives-1;
 				
@@ -407,9 +430,9 @@ public class Tronh_Game extends Game {
 				playerScore.resetHighScore();
 				enemyScore.resetHighScore();
 				level.levelReset();
+				gameOver = true;
 			}
 			player.lives = (player.lives == 1) ? 5 : player.lives-1;
-		
 		}
 	}
 
