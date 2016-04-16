@@ -40,6 +40,7 @@ public class Tronh_Game extends Game {
 	int timeLeft = 0;
 	int powerCount = 0;
 	int enemySpeed = 5;
+	int enemySpeedAugment = 0;
 	int playerSpeed = 10;
 	int bulletSpeed = 30;
 	int coinFieldExtension = 0;
@@ -58,7 +59,7 @@ public class Tronh_Game extends Game {
 	static String mainSound = "src/sounds/main.wav";
 	static Font customFont;
 	static Font largeCustomFont;
-	
+
 	// Calling for outside classes
 	PowerUp powerUp = new PowerUp(WIDTH, HEIGHT);
 	Coin coin = new Coin(WIDTH, HEIGHT);
@@ -68,7 +69,6 @@ public class Tronh_Game extends Game {
 	Player player = new Player();
 	Shoot gun = new Shoot();
 	Level level = new Level();
-	
 
 	/**
 	 * Tronh - The Game
@@ -88,7 +88,8 @@ public class Tronh_Game extends Game {
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf"))
 					.deriveFont(12f);
-			largeCustomFont =Font.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf"))
+			largeCustomFont = Font
+					.createFont(Font.TRUETYPE_FONT, Tronh_Game.class.getResourceAsStream("fonts/seed.ttf"))
 					.deriveFont(48f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(
@@ -109,9 +110,7 @@ public class Tronh_Game extends Game {
 			playSound(mainSound, true);
 			maintrackPlayed = true;
 		}
-		
-		
-		
+
 		// Setting the graphics objects
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -132,26 +131,26 @@ public class Tronh_Game extends Game {
 
 		// Rendering enemy
 		enemy.drawEnemy(g, enemy.getX(), enemy.getY(), enemy.getDirection());
-		
-		// Rendering Game Over 
-		if(gameOver){
-		g.setColor(new Color(255, 0, 0));
-		g.setFont(largeCustomFont);
-		g.drawString("GAME OVER", 285, 300);
+
+		// Rendering Game Over
+		if (gameOver) {
+			g.setColor(new Color(255, 0, 0));
+			g.setFont(largeCustomFont);
+			g.drawString("GAME OVER", 285, 300);
 		}
-		
+
 		// Checking if the player is active.
 		player.checkPressed(p1, stopped);
-		
+
 		// Code that runs while the Player can move
 		if (player.canRun) {
-			
+
 			// Activate all actions
 			stopped = false;
-			
+
 			// Remove Game Over
 			gameOver = false;
-			
+
 			// Generate score
 			playerScore.drawScore(g, 20, 30, "Your score: ");
 
@@ -160,7 +159,7 @@ public class Tronh_Game extends Game {
 
 			// Show which level it is
 			level.drawLevel(g, 450, 30);
-			//level.died = false;
+			// level.died = false;
 
 			if (prevType != null && timeLeft != 150 && (timeLeft % 5 == 0 || timeLeft % 4 == 0)) {
 				if (timeLeft > 100) {
@@ -195,12 +194,10 @@ public class Tronh_Game extends Game {
 
 			// Moves player
 			player.Move(player.getX(), player.getY(), playerSpeed);
-			
+
 			// Moves enemy player
 			enemy.moveEnemy(coinX, coinY, enemySpeed);
 
-			
-			
 			// Renders coinField when it is active (visually)
 			if (isForceField == true) {
 				powerUp.drawField(g, player.getX() - player.getPlayerHeight(player.direction) / 2 + 5,
@@ -217,7 +214,7 @@ public class Tronh_Game extends Game {
 			if (timeLeft == 0) {
 				timeLeft = 150;
 				playerSpeed = 10;
-				enemySpeed = 5;
+				enemySpeed = 5 + enemySpeedAugment;
 				isForceField = false;
 				isCoinField = false;
 				hasPower = false;
@@ -231,8 +228,8 @@ public class Tronh_Game extends Game {
 				timeLeft--;
 				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
 			}
-			
-			//Draw player lives
+
+			// Draw player lives
 			player.drawPlayerLives(g);
 
 		}
@@ -250,7 +247,6 @@ public class Tronh_Game extends Game {
 				playSound(freezeSound, false);
 			}
 		}
-		
 
 		// ------------- Collision methods -------------------
 
@@ -282,6 +278,10 @@ public class Tronh_Game extends Game {
 			playSound(collectSound, false);
 			level.died = false;
 			stopped = true;
+			
+			if (level.currentLevel % 5 == 0 && level.currentLevel != 0){
+				enemySpeedAugment += 1;
+			}
 		}
 
 		// Checks collisions between coin and PowerUp coinField
@@ -292,6 +292,7 @@ public class Tronh_Game extends Game {
 			playerScore.saveScore();
 			powerCount += 1;
 			playSound(collectSound, false);
+			
 		}
 
 		// Check collisions between enemy and coin
@@ -342,7 +343,7 @@ public class Tronh_Game extends Game {
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 					playSound(shieldSound, false);
 				}
-				
+
 				// Life conditions
 				if (powerUp.getType().equals("Life")) {
 					player.lives++;
@@ -358,11 +359,11 @@ public class Tronh_Game extends Game {
 				powerUp.setPrevType(prevType);
 				timeLeft = 150;
 				powerCount = 0;
-				
+
 			}
 
 			// Draws timer for PowerUp limits
-			if (hasPower){
+			if (hasPower) {
 				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
 			}
 		}
@@ -389,22 +390,23 @@ public class Tronh_Game extends Game {
 				isForceField = false;
 				isCoinField = false;
 				playerSpeed = 10;
-				enemySpeed = 5;
+				enemySpeed = 5 + enemySpeedAugment;
 				timeLeft = 150;
 				powerCount = 0;
 				level.died = true;
 				stopped = true;
 				playSound(collideSound, false);
 				hasPower = false;
-				if(player.lives == 1){
+				if (player.lives == 1) {
 					playerScore.resetHighScore();
 					enemyScore.resetHighScore();
+					enemySpeedAugment = 0;
 					level.levelReset();
 					gameOver = true;
-			
+
 				}
-				player.lives = (player.lives == 1) ? 5 : player.lives-1;
-				
+				player.lives = (player.lives == 1) ? 5 : player.lives - 1;
+
 			}
 
 		}
@@ -429,20 +431,21 @@ public class Tronh_Game extends Game {
 			isForceField = false;
 			isCoinField = false;
 			playerSpeed = 10;
-			enemySpeed = 5;
+			enemySpeed = 5 + enemySpeedAugment;
 			timeLeft = 150;
 			powerCount = 0;
 			level.died = true;
 			stopped = true;
 			playSound(collideSound, false);
 			hasPower = false;
-			if(player.lives == 1){
+			if (player.lives == 1) {
 				playerScore.resetHighScore();
 				enemyScore.resetHighScore();
+				enemySpeedAugment = 0;
 				level.levelReset();
 				gameOver = true;
 			}
-			player.lives = (player.lives == 1) ? 5 : player.lives-1;
+			player.lives = (player.lives == 1) ? 5 : player.lives - 1;
 		}
 	}
 

@@ -88,9 +88,11 @@ public class PowerUp {
 		if (getType().equals("Force Field")) {
 			g.drawImage(forceFieldIcon, x, y, null);
 		}
+		
 		if (getType().equals("Coin Field")) {
 			g.drawImage(coinFieldIcon, x, y, null);
 		}
+		
 		if (getType().equals("Life")) {
 			g.drawImage(lifeIcon, x, y, null);
 		}
@@ -132,7 +134,7 @@ public class PowerUp {
 		if (lockStatus == "unlock_2") {
 			rand = (int) Tronh_Game.randFloat(1, 4);
 		}
-		
+
 		if (lockStatus == "unlock_3") {
 			rand = (int) Tronh_Game.randFloat(1, 5);
 		}
@@ -156,7 +158,7 @@ public class PowerUp {
 	}
 
 	public void drawTimer(Graphics2D g, int x, int y, int timeLeft, String type) {
-		if(type.equals("Life")){
+		if (type.equals("Life")) {
 			return;
 		}
 		g.setColor(Color.WHITE);
