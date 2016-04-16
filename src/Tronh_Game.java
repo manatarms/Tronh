@@ -5,16 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.Timer;
 
 import arcadia.Arcadia;
 import arcadia.Game;
@@ -173,6 +172,10 @@ public class Tronh_Game extends Game {
 				}
 				if (level.currentLevel == 10 && timeLeft < 90) {
 					g.drawString("Coin Field Unlocked!", 400, 300);
+					playSound(levelSound, false);
+				}
+				if (level.currentLevel == 15 && timeLeft < 90) {
+					g.drawString("Life Unlocked!", 400, 300);
 					playSound(levelSound, false);
 				}
 
@@ -339,6 +342,13 @@ public class Tronh_Game extends Game {
 					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
 					playSound(shieldSound, false);
 				}
+				
+				// Life conditions
+				if (powerUp.getType().equals("Life")) {
+					player.lives++;
+					powerUp.drawPowerUp(g, powerUp.getX(), powerUp.getY());
+					playSound(shieldSound, false);
+				}
 
 				// Properties for rendering PowerUps
 				powerUp.currDrawn = true;
@@ -352,9 +362,9 @@ public class Tronh_Game extends Game {
 			}
 
 			// Draws timer for PowerUp limits
-			if (hasPower)
+			if (hasPower){
 				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
-
+			}
 		}
 
 		// Check collision between player and enemy

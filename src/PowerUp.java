@@ -63,13 +63,14 @@ public class PowerUp {
 	public void drawPowerUp(Graphics2D g, int x, int y) {
 
 		currDrawn = true;
-		Image fastah = null, slowah = null, forceFieldIcon = null, coinFieldIcon = null;
+		Image fastah = null, slowah = null, forceFieldIcon = null, coinFieldIcon = null, lifeIcon = null;
 
 		try {
 			fastah = ImageIO.read(Tronh_Game.class.getResource("images/fastah.png"));
 			slowah = ImageIO.read(Tronh_Game.class.getResource("images/slowah.png"));
 			forceFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/ForceFieldIcon.png"));
 			coinFieldIcon = ImageIO.read(Tronh_Game.class.getResource("images/CoinFieldIcon.png"));
+			lifeIcon = ImageIO.read(Tronh_Game.class.getResource("images/heartIcon.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -89,6 +90,9 @@ public class PowerUp {
 		}
 		if (getType().equals("Coin Field")) {
 			g.drawImage(coinFieldIcon, x, y, null);
+		}
+		if (getType().equals("Life")) {
+			g.drawImage(lifeIcon, x, y, null);
 		}
 	}
 
@@ -128,6 +132,10 @@ public class PowerUp {
 		if (lockStatus == "unlock_2") {
 			rand = (int) Tronh_Game.randFloat(1, 4);
 		}
+		
+		if (lockStatus == "unlock_3") {
+			rand = (int) Tronh_Game.randFloat(1, 5);
+		}
 		if (rand == 1) {
 			type = "Speed Up";
 		}
@@ -140,14 +148,18 @@ public class PowerUp {
 		if (rand == 4) {
 			type = "Coin Field";
 		}
-
+		if (rand == 5) {
+			type = "Life";
+		}
 		currRand = rand;
 
 	}
 
 	public void drawTimer(Graphics2D g, int x, int y, int timeLeft, String type) {
+		if(type.equals("Life")){
+			return;
+		}
 		g.setColor(Color.WHITE);
-
 		String s = type + " : " + (timeLeft / 30 + 1);
 		g.setFont(Tronh_Game.customFont);
 		g.drawString(s, x, y);

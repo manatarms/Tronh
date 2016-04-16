@@ -27,6 +27,9 @@ public class Level {
 			if (currentLevel >= 10) {
 				p.lockStatus = "unlock_2";
 			}
+			if (currentLevel >= 15) {
+				p.lockStatus = "unlock_3";
+			}
 		}
 		if (score % 5 > 0) {
 			return true;
