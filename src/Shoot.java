@@ -1,5 +1,7 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.IOException;
+import java.awt.Image;
+import javax.imageio.ImageIO;
 
 import arcadia.Button;
 import arcadia.Input;
@@ -8,24 +10,46 @@ public class Shoot {
 
 	int bulletX;
 	int bulletY;
+	int freezeTime;
 	String bikeDir;
 
 	boolean shootStatus;
 	boolean starter;
+	boolean isFrozen;
 
 	boolean impact;
+	Image bullet;
 
 	Shoot() {
 		shootStatus = false;
 		starter = true;
 		bikeDir = "DOWN";
 		impact = false;
+		freezeTime = 150;
+		isFrozen  = false;
+	}
+	
+	void freezeReset()
+	{
+		freezeTime = 150;
+		isFrozen  = false;
+	}
+	
+	void frozen()
+	{
+		freezeTime = 150;
+		isFrozen = true;
 	}
 
 	// draws a white circular bullet of radius 10.0
 	void drawBullet(Graphics2D gh) {
-		gh.setColor(Color.WHITE);
-		gh.fillOval(bulletX, bulletY, 10, 10);
+		try {
+			bullet = ImageIO.read(Tronh_Game.class.getResource("images/bullet.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		gh.drawImage(bullet, bulletX, bulletY, null);
 	}
 
 	// gets the position from where the shot is fired

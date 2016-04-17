@@ -40,7 +40,7 @@ public class Level {
 
 	// resets back to level 0
 	public void levelReset() {
-		currentLevel = 0;
+		currentLevel = 1;
 	}
 
 	// prints the current level on the game screen

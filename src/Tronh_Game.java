@@ -45,6 +45,8 @@ public class Tronh_Game extends Game {
 	int bulletSpeed = 30;
 	int coinFieldExtension = 0;
 	int coinFieldAdjustment = 0;
+	int tempSpeedForFreeze;
+	
 	String lockMode = "locked";
 	String prevType;
 	String enemyDirection = "UP";
@@ -215,6 +217,7 @@ public class Tronh_Game extends Game {
 				timeLeft = 150;
 				playerSpeed = 10;
 				enemySpeed = 5 + enemySpeedAugment;
+				tempSpeedForFreeze = enemySpeed;
 				isForceField = false;
 				isCoinField = false;
 				hasPower = false;
@@ -226,7 +229,7 @@ public class Tronh_Game extends Game {
 			// Checks if Power is active
 			if (hasPower) {
 				timeLeft--;
-				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
+				PowerUp.drawTimer(g, 100, 100, timeLeft, prevType);
 			}
 
 			// Draw player lives
@@ -235,17 +238,30 @@ public class Tronh_Game extends Game {
 		}
 
 		// Fires gun if triggered
+		
 		if (gun.shootStatus) {
-			gun.starter(player.getX(), player.getY(), player.getDirection());
+			gun.starter(player.getX()+ (player.getPlayerWidth(player.getDirection())/2), player.getY() + (player.getPlayerHeight(player.getDirection())/2), player.getDirection());
 			gun.fire(bulletSpeed);
 			gun.drawBullet(g);
 			playSound(gunSound, false);
+			
 			// Checks if enemy was hit
 			if (gun.hitCheck(enemy)) {
 				enemySpeed = 0;
-				timeLeft = 150;
+				gun.frozen();
 				playSound(freezeSound, false);
 			}
+		}
+		
+		if(gun.isFrozen)
+		{
+			gun.freezeTime -= 1;
+			PowerUp.drawTimer(g, 100, 125, gun.freezeTime, "Enemy Freeze");
+		}
+		if(gun.freezeTime < 0)
+		{
+			enemySpeed = tempSpeedForFreeze;
+			gun.freezeReset();
 		}
 
 		// ------------- Collision methods -------------------
@@ -364,7 +380,7 @@ public class Tronh_Game extends Game {
 
 			// Draws timer for PowerUp limits
 			if (hasPower) {
-				powerUp.drawTimer(g, 100, 100, timeLeft, prevType);
+				PowerUp.drawTimer(g, 100, 100, timeLeft, prevType);
 			}
 		}
 
@@ -395,6 +411,7 @@ public class Tronh_Game extends Game {
 				powerCount = 0;
 				level.died = true;
 				stopped = true;
+				gun.freezeReset();
 				playSound(collideSound, false);
 				hasPower = false;
 				if (player.lives == 1) {
@@ -403,7 +420,7 @@ public class Tronh_Game extends Game {
 					enemySpeedAugment = 0;
 					level.levelReset();
 					gameOver = true;
-
+					
 				}
 				player.lives = (player.lives == 1) ? 5 : player.lives - 1;
 
@@ -436,6 +453,7 @@ public class Tronh_Game extends Game {
 			powerCount = 0;
 			level.died = true;
 			stopped = true;
+			gun.freezeReset();
 			playSound(collideSound, false);
 			hasPower = false;
 			if (player.lives == 1) {
