@@ -158,7 +158,7 @@ public class PowerUp {
 
 	}
 
-	public void drawTimer(Graphics2D g, int x, int y, int timeLeft, String type) {
+	public static void drawTimer(Graphics2D g, int x, int y, int timeLeft, String type) {
 		if (type.equals("Life")) {
 			return;
 		}
