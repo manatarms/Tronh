@@ -138,7 +138,7 @@ public class PowerUp {
 		if (lockStatus == "unlock_3") {
 			rand = (int) Tronh_Game.randFloat(1, 5);
 		}
-
+		
 		if (rand == 1) {
 			type = "Speed Up";
 		}
